@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * 删除
+ *
  * @author cr
  * @Date: 2021-02-27 14:10
  */
@@ -28,13 +29,13 @@ public class RecordDelHandle extends BaseHandle implements IRecordDelHandle {
      */
     @Override
     public boolean updateDataForReDel(GridRecordDataModel model) {
-        Query query=new Query();
+        Query query = new Query();
         query.addCriteria(Criteria.where("list_id").is(model.getList_id())
-        .and("index").is(model.getIndex()));
+                .and("index").is(model.getIndex()));
 
-        Update update=new Update();
-        update.set("is_delete",model.getIs_delete());
-        return updateMulti(query,update);
+        Update update = new Update();
+        update.set("is_delete", model.getIs_delete());
+        return updateMulti(query, update);
     }
 
     /**
@@ -45,15 +46,15 @@ public class RecordDelHandle extends BaseHandle implements IRecordDelHandle {
      */
     @Override
     public String delDocuments(List<String> ids) {
-        if(ids==null || ids.size()==0){
+        if (ids == null || ids.size() == 0) {
             return "";
         }
-        Query query=new Query();
+        Query query = new Query();
         query.addCriteria(Criteria.where("_id").in(ids.toArray()));
-        try{
-            mongoTemplate.remove(query,COLLECTION_NAME);
+        try {
+            mongoTemplate.remove(query, COLLECTION_NAME);
             return "";
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.toString());
             return ex.toString();
         }
@@ -67,17 +68,17 @@ public class RecordDelHandle extends BaseHandle implements IRecordDelHandle {
      */
     @Override
     public int[] delete(List<String> listIds) {
-        if(listIds==null || listIds.size()==0){
+        if (listIds == null || listIds.size() == 0) {
             return null;
         }
-        Query query=new Query();
+        Query query = new Query();
         query.addCriteria(Criteria.where("list_id").in(listIds.toArray()));
-        try{
-            DeleteResult result=mongoTemplate.remove(query,COLLECTION_NAME);
-            int[] i=new int[0];
-            i[0]=(int)result.getDeletedCount();
+        try {
+            DeleteResult result = mongoTemplate.remove(query, COLLECTION_NAME);
+            int[] i = new int[0];
+            i[0] = (int) result.getDeletedCount();
             return i;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.toString());
             return null;
         }

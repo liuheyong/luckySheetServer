@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 发布
+ *
  * @author Administrator
  */
 @Slf4j
@@ -26,15 +27,16 @@ public class RedisMessagePublish {
 
     /**
      * 发布者
-     * @param redisMessageModel  消息内容
+     *
+     * @param redisMessageModel 消息内容
      * @return
      */
-    public boolean publishMessage(RedisMessageModel redisMessageModel){
-        try{
-            redisTemplate.convertAndSend(channel,new Gson().toJson(redisMessageModel));
+    public boolean publishMessage(RedisMessageModel redisMessageModel) {
+        try {
+            redisTemplate.convertAndSend(channel, new Gson().toJson(redisMessageModel));
             return true;
-        }catch (Exception ex){
-            log.error("publishMessage Error:{}",ex);
+        } catch (Exception ex) {
+            log.error("publishMessage Error:{}", ex);
             return false;
         }
     }

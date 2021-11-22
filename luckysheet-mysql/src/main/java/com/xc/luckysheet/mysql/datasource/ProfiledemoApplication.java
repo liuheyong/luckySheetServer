@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 /**
  * 开启注解事务管理，等同于xml配置文件中的 <tx:annotation-driven />
+ *
  * @author Administrator
  */
 @EnableTransactionManagement
@@ -27,19 +28,17 @@ public class ProfiledemoApplication implements TransactionManagementConfigurer {
      */
     @Resource(name = "mysqlDataSource")
     private DataSource dataSource;
-
+    @Resource(name = "mysqlTxManager")
+    private PlatformTransactionManager txManager;
 
     @Bean(name = "mysqlTxManager")
     public PlatformTransactionManager mysqlTxManager() {
         return new DataSourceTransactionManager(dataSource);
     }
 
-
-    @Resource(name="mysqlTxManager")
-    private PlatformTransactionManager txManager;
-
     /**
      * 实现接口 TransactionManagementConfigurer 方法，其返回值代表在拥有多个事务管理器的情况下默认使用的事务管理器
+     *
      * @return
      */
     @Override

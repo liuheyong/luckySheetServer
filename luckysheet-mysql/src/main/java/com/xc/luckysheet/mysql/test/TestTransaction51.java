@@ -14,26 +14,26 @@ import java.util.Date;
  */
 @Slf4j
 @Service
-@Transactional(value = "mysqlTxManager",rollbackFor = Exception.class)
+@Transactional(value = "mysqlTxManager", rollbackFor = Exception.class)
 public class TestTransaction51 extends BaseHandle {
 
     @Autowired
     private TestTransaction52 testTransaction52;
 
-    public String test(){
+    public String test() {
         addsuccess();
         testTransaction52.adderror();
         addsuccess();
         return "success";
     }
 
-    public String addsuccess(){
-        try{
-            String sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,snowFlake.nextId().longValue(),"{}",new Date());
+    public String addsuccess() {
+        try {
+            String sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, snowFlake.nextId().longValue(), "{}", new Date());
 
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }

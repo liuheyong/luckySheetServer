@@ -13,11 +13,11 @@ import java.util.Date;
  */
 @Slf4j
 @Service
-@Transactional(value = "mysqlTxManager",rollbackFor = Exception.class)
+@Transactional(value = "mysqlTxManager", rollbackFor = Exception.class)
 public class TestTransaction4 extends BaseHandle {
 
 
-    public String test(){
+    public String test() {
         addsuccess();
         adderror();
         addsuccess();
@@ -25,26 +25,26 @@ public class TestTransaction4 extends BaseHandle {
     }
 
 
-    public String addsuccess(){
-        try{
-            String sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,snowFlake.nextId().longValue(),"{}",new Date());
+    public String addsuccess() {
+        try {
+            String sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, snowFlake.nextId().longValue(), "{}", new Date());
 
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
     }
 
 
-    public String adderror(){
-        try{
+    public String adderror() {
+        try {
             //类型错误
-            String sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,"qewqeqw","{}",new Date());
+            String sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, "qewqeqw", "{}", new Date());
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }

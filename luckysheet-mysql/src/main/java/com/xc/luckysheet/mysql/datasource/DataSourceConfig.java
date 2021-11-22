@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 
 /**
  * 数据源配置
+ *
  * @author Administrator
  */
 @Configuration
@@ -21,15 +22,14 @@ public class DataSourceConfig {
 
     @Bean(name = "mysqlDataSource")
     @ConfigurationProperties(prefix = "db.mysql.druid")
-    public DataSource postgreDataSource(){
+    public DataSource postgreDataSource() {
         DataSource dataSource = DataSourceBuilder.create().type(DruidDataSource.class).build();
-        log.debug("数据源 mysql",dataSource);
+        log.debug("数据源 mysql：{}", dataSource);
         return dataSource;
     }
 
-    @Bean(name="snowFlake")
-    public SnowFlake getSnowFlake(){
-        return new SnowFlake(1l,1l);
+    @Bean(name = "snowFlake")
+    public SnowFlake getSnowFlake() {
+        return new SnowFlake(1l, 1l);
     }
-
 }

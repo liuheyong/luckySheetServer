@@ -22,9 +22,8 @@ public class JdbcTempleConfig {
     @Resource(name = "mysqlDataSource")
     private DataSource dataSource;
 
-    @Bean(name="mysqlJdbcTemplate")
-    public JdbcTemplate createJdbcTemplate(){
+    @Bean(name = "mysqlJdbcTemplate")
+    public JdbcTemplate createJdbcTemplate() {
         return new JdbcTemplate(dataSource);
     }
-
 }

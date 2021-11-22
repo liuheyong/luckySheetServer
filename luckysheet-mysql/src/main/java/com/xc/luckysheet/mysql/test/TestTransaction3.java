@@ -15,39 +15,37 @@ import java.util.Date;
 @Service
 public class TestTransaction3 extends BaseHandle {
 
-    @Transactional(value = "mysqlTxManager",rollbackFor = Exception.class)
-    public String test(){
+    @Transactional(value = "mysqlTxManager", rollbackFor = Exception.class)
+    public String test() {
         addsuccess();
         adderror();
         addsuccess();
         return "success";
     }
 
-    @Transactional(value = "mysqlTxManager",rollbackFor = Exception.class)
-    public String addsuccess(){
-        try{
-            String sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,snowFlake.nextId().longValue(),"{}",new Date());
+    @Transactional(value = "mysqlTxManager", rollbackFor = Exception.class)
+    public String addsuccess() {
+        try {
+            String sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, snowFlake.nextId().longValue(), "{}", new Date());
 
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    @Transactional(value = "mysqlTxManager",rollbackFor = Exception.class)
-    public String adderror(){
-        try{
+    @Transactional(value = "mysqlTxManager", rollbackFor = Exception.class)
+    public String adderror() {
+        try {
             //类型错误
-            String sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,"qewqeqw","{}",new Date());
+            String sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, "qewqeqw", "{}", new Date());
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
     }
-
-
 }

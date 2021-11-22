@@ -11,6 +11,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
  * 监听
+ *
  * @author Administrator
  */
 public class RedisMessageListener implements MessageListener {
@@ -20,6 +21,7 @@ public class RedisMessageListener implements MessageListener {
 
     /**
      * 订阅者收到消息
+     *
      * @param message
      * @param pattern
      */
@@ -32,8 +34,8 @@ public class RedisMessageListener implements MessageListener {
         Object body = serializerValue.deserialize(message.getBody());
         //System.out.println("主题: " + channel);
         //System.out.println("消息内容: " + String.valueOf(body));
-        RedisMessageModel bson1=new Gson().fromJson(body.toString(),RedisMessageModel.class);
-        System.out.println("得到Redis推送消息："+MyStringUtil.getStringShow(bson1.toString()));
+        RedisMessageModel bson1 = new Gson().fromJson(body.toString(), RedisMessageModel.class);
+        System.out.println("得到Redis推送消息：" + MyStringUtil.getStringShow(bson1.toString()));
         MyWebSocketHandler.sendMessageToUserByRedis(bson1);
     }
 

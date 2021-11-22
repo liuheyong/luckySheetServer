@@ -18,5 +18,4 @@ public class TimeUtil {
         calendar.set(Calendar.SECOND, 0);
         return (int) (calendar.getTime().getTime() / 1000);
     }
-
 }

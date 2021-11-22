@@ -4,7 +4,6 @@ logging:
 # 日志是否打印sql
 showSql: true
 
-
 spring:
   redis:
     host: 127.0.0.1

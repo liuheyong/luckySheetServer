@@ -13,44 +13,42 @@ import java.util.Date;
  */
 @Slf4j
 @Service
-@Transactional(value = "mysqlTxManager",rollbackFor = Exception.class)
+@Transactional(value = "mysqlTxManager", rollbackFor = Exception.class)
 public class TestTransaction2 extends BaseHandle {
 
-
-    public String add3(){
-        try{
-            String sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,snowFlake.nextId().longValue(),"{}",new Date());
+    public String add3() {
+        try {
+            String sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, snowFlake.nextId().longValue(), "{}", new Date());
 
             //类型错误
-            sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,"qewqeqw","{}",new Date());
+            sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, "qewqeqw", "{}", new Date());
 
-            sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,snowFlake.nextId().longValue(),"{}",new Date());
+            sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, snowFlake.nextId().longValue(), "{}", new Date());
 
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
     }
 
-
     public String add5() throws Exception {
-        try{
-            String sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,snowFlake.nextId().longValue(),"{}",new Date());
+        try {
+            String sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, snowFlake.nextId().longValue(), "{}", new Date());
 
             //类型错误
-            sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,"qewqeqw","{}",new Date());
+            sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, "qewqeqw", "{}", new Date());
 
-            sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,snowFlake.nextId().longValue(),"{}",new Date());
+            sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, snowFlake.nextId().longValue(), "{}", new Date());
 
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw new Exception(e.getMessage());
         }

@@ -10,7 +10,8 @@ public class Test {
         System.out.println("========================");
         test2();
     }
-    private static void test1(){
+
+    private static void test1() {
         People people = new Student();
         InvocationHandler handler = new WorkHandler(people);
 
@@ -24,7 +25,7 @@ public class Test {
         System.out.println(time);
     }
 
-    private static void test2(){
+    private static void test2() {
         People people = new Student();
         WorkHandler2 handler = new WorkHandler2();
 

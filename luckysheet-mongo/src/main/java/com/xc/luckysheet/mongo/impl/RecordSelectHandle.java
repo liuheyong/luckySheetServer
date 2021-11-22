@@ -2,7 +2,6 @@ package com.xc.luckysheet.mongo.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mongodb.DBObject;
 import com.xc.luckysheet.JfGridConfigModel;
 import com.xc.luckysheet.db.IRecordSelectHandle;
 import com.xc.luckysheet.util.JfGridFileUtil;
@@ -18,6 +17,7 @@ import java.util.List;
 
 /**
  * 查询
+ *
  * @author cr
  * @Date: 2021-02-27 14:11
  */
@@ -35,21 +35,20 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
     @Override
     public Integer getFirstBlockByGridKey(String listId, String index) {
         //默认获取第一块
-        Document dbObject = getQueryCondition(listId,index,JfGridConfigModel.FirstBlockID);
+        Document dbObject = getQueryCondition(listId, index, JfGridConfigModel.FirstBlockID);
 
-        Document fieldsObject=new Document();
-        fieldsObject.put("_id",false);
-        fieldsObject.put("list_id",true);
-        fieldsObject.put("index",true);
-
-        try{
+        Document fieldsObject = new Document();
+        fieldsObject.put("_id", false);
+        fieldsObject.put("list_id", true);
+        fieldsObject.put("index", true);
+        try {
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject=(JSONObject)mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
-            if(jsonObject==null){
+            JSONObject jsonObject = (JSONObject) mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            if (jsonObject == null) {
                 return null;
             }
             return 1;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
@@ -66,19 +65,19 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
         Document dbObject = new Document();
         dbObject.put("list_id", listId);
         dbObject.put("block_id", JfGridConfigModel.FirstBlockID);
-        dbObject.put("status",1);
-        dbObject.put("is_delete",0);
+        dbObject.put("status", 1);
+        dbObject.put("is_delete", 0);
 
-        Document fieldsObject=new Document();
-        fieldsObject.put("_id",false);
-        fieldsObject.put("list_id",true);
-        fieldsObject.put("index",true);
+        Document fieldsObject = new Document();
+        fieldsObject.put("_id", false);
+        fieldsObject.put("list_id", true);
+        fieldsObject.put("index", true);
 
-        try{
+        try {
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject=(JSONObject)mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
-            return getStringByKey(jsonObject,"index");
-        }catch (Exception e){
+            JSONObject jsonObject = (JSONObject) mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            return getStringByKey(jsonObject, "index");
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
@@ -94,19 +93,19 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public String getFirstBlockRowColByGridKey(String listId, String index) {
-        Document dbObject = getQueryCondition(listId,index,JfGridConfigModel.FirstBlockID);
+        Document dbObject = getQueryCondition(listId, index, JfGridConfigModel.FirstBlockID);
 
-        Document fieldsObject=new Document();
-        fieldsObject.put("_id",false);
-        fieldsObject.put("list_id",true);
-        fieldsObject.put("index",true);
-        fieldsObject.put("row_col",true);
+        Document fieldsObject = new Document();
+        fieldsObject.put("_id", false);
+        fieldsObject.put("list_id", true);
+        fieldsObject.put("index", true);
+        fieldsObject.put("row_col", true);
 
-        try{
+        try {
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject=(JSONObject)mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
-            return getStringByKey(jsonObject,"row_col");
-        }catch (Exception e){
+            JSONObject jsonObject = (JSONObject) mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            return getStringByKey(jsonObject, "row_col");
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
@@ -121,20 +120,20 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public List<JSONObject> getByGridKey_NOCelldata(String listId) {
-        try{
-            Document fieldsObject=new Document();
-            fieldsObject.put("json_data",false);
-            Document searchObject1=new Document();
-            Query query=new BasicQuery(searchObject1,fieldsObject);
+        try {
+            Document fieldsObject = new Document();
+            fieldsObject.put("json_data", false);
+            Document searchObject1 = new Document();
+            Query query = new BasicQuery(searchObject1, fieldsObject);
             //Query query=new Query();
             query.addCriteria(
                     Criteria.where("list_id").is(listId)
                             .and("block_id").is(JfGridConfigModel.FirstBlockID)
                             .and("is_delete").is(0))
                     .with(new Sort(Sort.Direction.ASC, "order"));
-            log.info("query "+query+" COLLECTION_NAME:"+COLLECTION_NAME);
+            log.info("query " + query + " COLLECTION_NAME:" + COLLECTION_NAME);
             return mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
@@ -149,14 +148,14 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public List<JSONObject> getBlockAllByGridKey(String listId, String index) {
-        try{
-            Query query=new Query();
+        try {
+            Query query = new Query();
             query.addCriteria(Criteria.where("list_id").is(listId)
                     .and("index").in(index)
                     .and("is_delete").is(0));
-            List<JSONObject> jsonObjects= mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
+            List<JSONObject> jsonObjects = mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
             return jsonObjects;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
@@ -172,22 +171,20 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public JSONObject getCelldataByGridKey(String listId, String index, String blockId) {
-        try{
-            Document dbObject = getQueryCondition(listId,index,blockId);
-
-            Document fieldsObject=new Document();
-            fieldsObject.put("_id",true);
-            fieldsObject.put("list_id",true);
-            fieldsObject.put("index",true);
-            fieldsObject.put("json_data.celldata",true);
-            fieldsObject.put("json_data.column",true);
-            fieldsObject.put("json_data.row",true);
-
+        try {
+            Document dbObject = getQueryCondition(listId, index, blockId);
+            Document fieldsObject = new Document();
+            fieldsObject.put("_id", true);
+            fieldsObject.put("list_id", true);
+            fieldsObject.put("index", true);
+            fieldsObject.put("json_data.celldata", true);
+            fieldsObject.put("json_data.column", true);
+            fieldsObject.put("json_data.row", true);
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject=  mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
             cellDataHandle(jsonObject);
             return jsonObject;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
@@ -203,23 +200,21 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
     @Override
     public JSONObject getConfigByGridKey(String listId, String index) {
         //默认获取第一块
-        try{
-            Document dbObject =getQueryCondition(listId,index,JfGridConfigModel.FirstBlockID);
-
-            Document fieldsObject=new Document();
-            fieldsObject.put("_id",false);
-            fieldsObject.put("list_id",true);
-            fieldsObject.put("index",true);
-            fieldsObject.put("json_data.config",true);
-            fieldsObject.put("json_data.calcChain",true);
-            fieldsObject.put("json_data.filter",true);
-            fieldsObject.put("block_id",true);
-
+        try {
+            Document dbObject = getQueryCondition(listId, index, JfGridConfigModel.FirstBlockID);
+            Document fieldsObject = new Document();
+            fieldsObject.put("_id", false);
+            fieldsObject.put("list_id", true);
+            fieldsObject.put("index", true);
+            fieldsObject.put("json_data.config", true);
+            fieldsObject.put("json_data.calcChain", true);
+            fieldsObject.put("json_data.filter", true);
+            fieldsObject.put("block_id", true);
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject=mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
             cellDataHandle(jsonObject);
             return jsonObject;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
@@ -236,33 +231,33 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public JSONObject getBlockMergeByGridKey(String listId, String index, List<String> ids) {
-        JSONObject _fblock=new JSONObject();
-        JSONArray _celldata=new JSONArray();
+        JSONObject _fblock = new JSONObject();
+        JSONArray _celldata = new JSONArray();
         //获取全部块
-        List<JSONObject> blocks=getBlockAllByGridKey(listId, index);
-        if(blocks!=null && blocks.size()>0){
-            for(JSONObject _b:blocks){
-                if(ids!=null){
-                    if(_b.containsKey("_id")){
+        List<JSONObject> blocks = getBlockAllByGridKey(listId, index);
+        if (blocks != null && blocks.size() > 0) {
+            for (JSONObject _b : blocks) {
+                if (ids != null) {
+                    if (_b.containsKey("_id")) {
                         ids.add(_b.get("_id").toString());
                     }
                 }
-                if(_b.containsKey("block_id")){
-                    if(JfGridConfigModel.FirstBlockID.equals(_b.get("block_id"))){
+                if (_b.containsKey("block_id")) {
+                    if (JfGridConfigModel.FirstBlockID.equals(_b.get("block_id"))) {
                         //信息块
-                        _fblock=_b;
-                    }else{
+                        _fblock = _b;
+                    } else {
                         //数据块
                         //注意：此处与MySql不同
-                        JSONArray _blockCellData=JfGridFileUtil.getSheetByIndex(_b);
-                        if(_blockCellData!=null){
+                        JSONArray _blockCellData = JfGridFileUtil.getSheetByIndex(_b);
+                        if (_blockCellData != null) {
                             _celldata.addAll(_blockCellData);
                         }
                     }
                 }
             }
         }
-        _fblock.put("celldata",_celldata);
+        _fblock.put("celldata", _celldata);
         return _fblock;
     }
 
@@ -275,26 +270,25 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public List<JSONObject> getBlocksByGridKey(String listId, boolean flag) {
-        try{
-//            Query query=new Query();
-//            query.addCriteria(Criteria.where("list_id").is(list_id).and("index").is(index));
-//            return mongoTemplate.find(query, DBObject.class, NEW_COLLECTION_NAME);
-
+        try {
+            //Query query=new Query();
+            //query.addCriteria(Criteria.where("list_id").is(list_id).and("index").is(index));
+            //return mongoTemplate.find(query, DBObject.class, NEW_COLLECTION_NAME);
             Document dbObject = new Document();
             dbObject.put("list_id", listId);
-            if(flag){
+            if (flag) {
                 dbObject.put("block_id", JfGridConfigModel.FirstBlockID);
             }
-            dbObject.put("is_delete",0);
+            dbObject.put("is_delete", 0);
 
-            Document fieldsObject=new Document();
-            fieldsObject.put("_id",true);
-            fieldsObject.put("list_id",true);
-            fieldsObject.put("index",true);
+            Document fieldsObject = new Document();
+            fieldsObject.put("_id", true);
+            fieldsObject.put("list_id", true);
+            fieldsObject.put("index", true);
 
             Query query = new BasicQuery(dbObject, fieldsObject);
-            return  mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
-        }catch (Exception e){
+            return mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
+        } catch (Exception e) {
             log.warn(e.getMessage());
             return null;
         }
@@ -309,15 +303,15 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public List<JSONObject> getAllIndexsByGridKey(String listId, List<String> indexs) {
-        try{
-            Query query=new Query();
+        try {
+            Query query = new Query();
             query.addCriteria(Criteria.where("list_id").is(listId)
                     .and("index").in(indexs)
                     .and("is_delete").is(0))
                     .with(new Sort(Sort.Direction.ASC, "order"));
-            log.info("getByGridKey--"+query);
+            log.info("getByGridKey--" + query);
             return mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.warn(e.getMessage());
             return null;
         }
@@ -332,14 +326,14 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public List<JSONObject> getIndexsByGridKey(String listId, String index) {
-        try{
-            Query query=new Query();
+        try {
+            Query query = new Query();
             query.addCriteria(Criteria.where("list_id").is(listId)
                     .and("index").in(index)
                     .and("is_delete").is(0))
                     .with(new Sort(Sort.Direction.ASC, "order"));
             return mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
@@ -354,21 +348,19 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
      */
     @Override
     public JSONObject getChartByGridKey(String listId, String index) {
-        try{
-            Document dbObject = getQueryCondition(listId,index,JfGridConfigModel.FirstBlockID);
-
-            Document fieldsObject=new Document();
-            fieldsObject.put("_id",false);
-            fieldsObject.put("list_id",true);
-            fieldsObject.put("index",true);
-            fieldsObject.put("json_data.chart",true);
-            fieldsObject.put("block_id",true);
-
+        try {
+            Document dbObject = getQueryCondition(listId, index, JfGridConfigModel.FirstBlockID);
+            Document fieldsObject = new Document();
+            fieldsObject.put("_id", false);
+            fieldsObject.put("list_id", true);
+            fieldsObject.put("index", true);
+            fieldsObject.put("json_data.chart", true);
+            fieldsObject.put("block_id", true);
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject= mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
             cellDataHandle(jsonObject);
             return jsonObject;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }

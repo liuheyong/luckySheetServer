@@ -2,6 +2,7 @@ package com.xc.luckysheet.util;
 
 /**
  * 雪花算法
+ *
  * @author Administrator
  */
 public class SnowFlake {
@@ -23,6 +24,7 @@ public class SnowFlake {
     private long machineId; //机器标识
     private long sequence = 0L; //序列号
     private long lastStmp = -1L; //上一次时间戳
+
     //1323969484872069121
     //1323969557093789698
     public SnowFlake(long datacenterId, long machineId) {
@@ -34,6 +36,15 @@ public class SnowFlake {
         }
         this.datacenterId = datacenterId;
         this.machineId = machineId;
+    }
+
+    public static void main(String[] args) {
+        SnowFlake n1 = new SnowFlake(0, Math.abs("127.0.0.1".hashCode()) % 32);
+        SnowFlake n2 = new SnowFlake(0, Math.abs("127.0.0.1".hashCode()) % 32);
+
+        System.out.println(n2.nextId());
+        System.out.println(n1.nextId());
+        System.out.println(n1.nextId() + "====" + n2.nextId());
     }
 
     //产生下一个ID
@@ -74,14 +85,5 @@ public class SnowFlake {
 
     private long timeGen() {
         return System.currentTimeMillis();
-    }
-
-    public static void main(String[] args){
-        SnowFlake n1=new SnowFlake(0,Math.abs("127.0.0.1".hashCode())%32);
-        SnowFlake n2=new SnowFlake(0,Math.abs("127.0.0.1".hashCode())%32);
-
-        System.out.println(n2.nextId());
-        System.out.println(n1.nextId());
-        System.out.println(n1.nextId()+"===="+n2.nextId());
     }
 }

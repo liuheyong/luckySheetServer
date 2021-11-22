@@ -13,11 +13,13 @@ import java.util.List;
 
 /**
  * 删除
+ *
  * @author Administrator
  */
 @Slf4j
 @Repository(value = "mysqlRecordDelHandle")
 public class RecordDelHandle extends BaseHandle implements IRecordDelHandle {
+
     /**
      * 删除sheet（非物理删除）
      *
@@ -26,12 +28,12 @@ public class RecordDelHandle extends BaseHandle implements IRecordDelHandle {
      */
     @Override
     public boolean updateDataForReDel(GridRecordDataModel model) {
-        try{
-            String sql1="update "+ JfGridConfigModel.TABLENAME+"  set is_delete=?  where  list_id=? and index=? ";
-            log.info("updateSql1:"+sql1);
-            luckySheetJdbcTemplate.update(sql1,new Object[]{model.getIs_delete(),model.getList_id(),model.getIndex()});
+        try {
+            String sql1 = "update " + JfGridConfigModel.TABLENAME + "  set is_delete=?  where  list_id=? and index=? ";
+            log.info("updateSql1:" + sql1);
+            luckySheetJdbcTemplate.update(sql1, new Object[]{model.getIs_delete(), model.getList_id(), model.getIndex()});
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return false;
         }
@@ -45,16 +47,16 @@ public class RecordDelHandle extends BaseHandle implements IRecordDelHandle {
      */
     @Override
     public String delDocuments(List<String> ids) {
-        try{
-            String id="";
+        try {
+            String id = "";
             for (String str : ids) {
-                id=id+str+",";
+                id = id + str + ",";
             }
-            id=id.substring(0, id.length()-1);
-            String delsql="DELETE from "+JfGridConfigModel.TABLENAME+" where id in ("+id+")";
+            id = id.substring(0, id.length() - 1);
+            String delsql = "DELETE from " + JfGridConfigModel.TABLENAME + " where id in (" + id + ")";
             luckySheetJdbcTemplate.update(delsql);
             return "";
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.toString());
             return ex.toString();
         }
@@ -68,15 +70,15 @@ public class RecordDelHandle extends BaseHandle implements IRecordDelHandle {
      */
     @Override
     public int[] delete(List<String> listIds) {
-        if(listIds==null && listIds.size()==0){
+        if (listIds == null && listIds.size() == 0) {
             return new int[]{};
         }
         DataSource ds = luckySheetJdbcTemplate.getDataSource();
-        BatchSqlUpdate bsu = new BatchSqlUpdate(ds, " delete  from "+JfGridConfigModel.TABLENAME +" where list_id = ? ");
+        BatchSqlUpdate bsu = new BatchSqlUpdate(ds, " delete  from " + JfGridConfigModel.TABLENAME + " where list_id = ? ");
         bsu.setBatchSize(4);
         bsu.setTypes(new int[]{Types.VARCHAR});
-        for(int i = 0; i < listIds.size(); i++){
-            log.info(bsu.update(new Object[]{listIds.get(i)})+"");
+        for (int i = 0; i < listIds.size(); i++) {
+            log.info(bsu.update(new Object[]{listIds.get(i)}) + "");
         }
         return bsu.flush();
     }

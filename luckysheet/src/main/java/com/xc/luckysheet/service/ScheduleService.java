@@ -11,28 +11,26 @@ import java.util.Date;
 
 /**
  * 定时任务
+ *
  * @author cr
  */
 @Slf4j
 @Service
 public class ScheduleService {
 
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Autowired
     private JfGridUpdateService jfGridUpdateService;
 
-    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @Scheduled(cron = "0 */5 * * * *")
-    public void test(){
+    public void test() {
         System.out.println(format.format(new Date()));
     }
 
-
-
     @Scheduled(cron = "0 0 1 * * *")
-    public void pgInit(){
+    public void pgInit() {
         jfGridUpdateService.initTestData();
-        System.out.println(format.format(new Date())+" luckysheet table init!!!");
+        System.out.println(format.format(new Date()) + " luckysheet table init!!!");
     }
 
 }

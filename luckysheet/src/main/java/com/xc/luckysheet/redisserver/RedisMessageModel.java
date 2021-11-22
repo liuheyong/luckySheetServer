@@ -5,6 +5,7 @@ import lombok.Data;
 
 /**
  * redis消息
+ *
  * @author Administrator
  */
 @Data
@@ -23,13 +24,14 @@ public class RedisMessageModel {
      */
     private String content;
 
-    public RedisMessageModel(String _ipandport,String _gridkey,String _content){
-        this.ipandport=_ipandport;
-        this.gridkey=_gridkey;
-        this.content=_content;
+    public RedisMessageModel(String _ipandport, String _gridkey, String _content) {
+        this.ipandport = _ipandport;
+        this.gridkey = _gridkey;
+        this.content = _content;
     }
-    public RedisMessageModel(JSONObject jsonObject){
-        if(jsonObject!=null) {
+
+    public RedisMessageModel(JSONObject jsonObject) {
+        if (jsonObject != null) {
             if (jsonObject.containsKey("ipandport")) {
                 this.ipandport = jsonObject.getString("ipandport");
             }
@@ -42,11 +44,11 @@ public class RedisMessageModel {
         }
     }
 
-    public JSONObject toDBObject(){
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("ipandport",ipandport);
-        jsonObject.put("gridkey",gridkey);
-        jsonObject.put("content",content);
+    public JSONObject toDBObject() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("ipandport", ipandport);
+        jsonObject.put("gridkey", gridkey);
+        jsonObject.put("content", content);
         return jsonObject;
     }
 

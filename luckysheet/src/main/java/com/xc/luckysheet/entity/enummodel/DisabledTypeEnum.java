@@ -17,20 +17,19 @@ public enum DisabledTypeEnum {
     DISABLE(1, "禁用"),
     ;
 
-    DisabledTypeEnum(Integer index, String name) {
-        this.index = index;
-        this.name = name;
-    }
-
     /**
      * index
      */
     private final Integer index;
-
     /**
      * 名称
      */
     private final String name;
+
+    DisabledTypeEnum(Integer index, String name) {
+        this.index = index;
+        this.name = name;
+    }
 
     public Integer getIndex() {
         return index;

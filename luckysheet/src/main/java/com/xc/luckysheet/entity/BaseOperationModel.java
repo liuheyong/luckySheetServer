@@ -11,19 +11,20 @@ import java.util.Date;
  * Date: 17-12-12
  * Time: 下午3:43
  * To change this template use File | Settings | File Templates.
+ *
  * @author Administrator
  */
 @Data
-public class BaseOperationModel implements BaseModel,Serializable {
+public class BaseOperationModel implements BaseModel, Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * 创建时间
      */
-	private Date create_time;
+    private Date create_time;
     /**
      * 修改时间
      */

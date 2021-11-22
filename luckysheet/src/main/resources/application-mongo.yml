@@ -18,7 +18,6 @@ spring:
         min-idle: 0
     database: 0
 
-
   #数据源配置
   data:
     mongodb:

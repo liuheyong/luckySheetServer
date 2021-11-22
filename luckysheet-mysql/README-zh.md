@@ -37,7 +37,6 @@ INSERT INTO luckysheet VALUES (139400313311449089, 'fblock', '', '3', '1079500#-
 注意：
 表中 index、order 是关键字
 
-
 ## 项目中使用
 1、luckysheet中的pom.xml 注释postgre，引入mysql
 ```aidl

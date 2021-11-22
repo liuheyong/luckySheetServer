@@ -24,6 +24,7 @@ import java.util.*;
 
 /**
  * 使用poi导出xls
+ *
  * @author Administrator
  */
 public class XlsUtil {
@@ -41,20 +42,21 @@ public class XlsUtil {
 
     /**
      * 输出文件流
+     *
      * @param outputStream 流
-     * @param isXlsx  是否是xlsx
+     * @param isXlsx       是否是xlsx
      * @param dbObjectList 数据
      */
-    public static void exportXlsFile(OutputStream outputStream, Boolean isXlsx,List<JSONObject> dbObjectList) throws IOException {
-        Workbook wb=null;
-        if(isXlsx){
-            wb=new XSSFWorkbook();
-        }else{
-            wb=new HSSFWorkbook();
+    public static void exportXlsFile(OutputStream outputStream, Boolean isXlsx, List<JSONObject> dbObjectList) throws IOException {
+        Workbook wb = null;
+        if (isXlsx) {
+            wb = new XSSFWorkbook();
+        } else {
+            wb = new HSSFWorkbook();
         }
-        if(dbObjectList!=null&&dbObjectList.size()>0){
-            for(int x=0;x<dbObjectList.size();x++){
-                XlsSheetUtil.exportSheet(wb,x,dbObjectList.get(x));
+        if (dbObjectList != null && dbObjectList.size() > 0) {
+            for (int x = 0; x < dbObjectList.size(); x++) {
+                XlsSheetUtil.exportSheet(wb, x, dbObjectList.get(x));
             }
         }
         wb.write(outputStream);

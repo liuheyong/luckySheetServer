@@ -9,8 +9,6 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 public class RedisLock {
 
-	@Autowired
-    private RedisTemplate redisTemplate;
     /**
      * 重试时间
      */
@@ -19,6 +17,8 @@ public class RedisLock {
      * 锁的前缀
      */
     private static final String LOCK_SUFFIX = "redis_lock:";
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      * 锁的key
      */
@@ -39,40 +39,44 @@ public class RedisLock {
     /**
      * 当前线程
      */
-    private String uid="";
+    private String uid = "";
 
     /**
      * 构造器
+     *
      * @param redisTemplate
-     * @param lockKey 锁的key
+     * @param lockKey       锁的key
      */
     public RedisLock(RedisTemplate redisTemplate, String lockKey) {
         this.redisTemplate = redisTemplate;
-        this.lockKey = LOCK_SUFFIX+lockKey;
+        this.lockKey = LOCK_SUFFIX + lockKey;
     }
 
     /**
      * 构造器
+     *
      * @param redisTemplate
-     * @param lockKey 锁的key
-     * @param timeoutMsecs 获取锁的超时时间
+     * @param lockKey       锁的key
+     * @param timeoutMsecs  获取锁的超时时间
      */
     public RedisLock(RedisTemplate redisTemplate, String lockKey, int timeoutMsecs) {
         this(redisTemplate, lockKey);
         this.timeoutMsecs = timeoutMsecs;
     }
+
     public RedisLock(RedisTemplate redisTemplate, String lockKey, int timeoutMsecs, String uid) {
         this(redisTemplate, lockKey);
         this.timeoutMsecs = timeoutMsecs;
-        this.uid=uid;
+        this.uid = uid;
     }
 
     /**
      * 构造器
+     *
      * @param redisTemplate
-     * @param lockKey 锁的key
-     * @param timeoutMsecs 获取锁的超时时间
-     * @param expireMsecs 锁的有效期
+     * @param lockKey       锁的key
+     * @param timeoutMsecs  获取锁的超时时间
+     * @param expireMsecs   锁的有效期
      */
     public RedisLock(RedisTemplate redisTemplate, String lockKey, int timeoutMsecs, int expireMsecs) {
         this(redisTemplate, lockKey, timeoutMsecs);
@@ -85,6 +89,7 @@ public class RedisLock {
 
     /**
      * 封装和jedis方法
+     *
      * @param key
      * @return
      */
@@ -95,27 +100,30 @@ public class RedisLock {
 
     /**
      * 封装和jedis方法
+     *
      * @param key
      * @param value
      * @return
      */
     private boolean setNX(final String key, final String value) {
-        return redisTemplate.opsForValue().setIfAbsent(key,value);
+        return redisTemplate.opsForValue().setIfAbsent(key, value);
     }
 
     /**
      * 封装和jedis方法
+     *
      * @param key
      * @param value
      * @return
      */
     private String getSet(final String key, final String value) {
-        Object obj = redisTemplate.opsForValue().getAndSet(key,value);
+        Object obj = redisTemplate.opsForValue().getAndSet(key, value);
         return obj != null ? (String) obj : null;
     }
 
     /**
      * 获取锁
+     *
      * @return 获取锁成功返回ture，超时返回false
      * @throws InterruptedException
      */
@@ -149,10 +157,11 @@ public class RedisLock {
         }
         return false;
     }
+
     /**
      * 释放获取到的锁
      */
-    public  synchronized void unlock() {
+    public synchronized void unlock() {
         if (locked) {
             redisTemplate.delete(lockKey);
             locked = false;

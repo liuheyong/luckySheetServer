@@ -13,16 +13,16 @@ import java.util.Date;
  */
 @Slf4j
 @Service
-@Transactional(value = "mysqlTxManager",rollbackFor = Exception.class)
+@Transactional(value = "mysqlTxManager", rollbackFor = Exception.class)
 public class TestTransaction52 extends BaseHandle {
 
-    public String adderror(){
-        try{
+    public String adderror() {
+        try {
             //类型错误
-            String sql="insert into test(id,jsontest,updatetime) values(?,?,?)";
-            luckySheetJdbcTemplate.update(sql,"qewqeqw","{}",new Date());
+            String sql = "insert into test(id,jsontest,updatetime) values(?,?,?)";
+            luckySheetJdbcTemplate.update(sql, "qewqeqw", "{}", new Date());
             return "success";
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }

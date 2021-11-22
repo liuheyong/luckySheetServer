@@ -36,18 +36,6 @@ public enum ExcelCenterStyleEnum {
     private final String name;
 
 
-    public Integer getOnlineExcelCode() {
-        return onlineExcelCode;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public short getExcelCode() {
-        return excelCode;
-    }
-
     ExcelCenterStyleEnum(short excelCode, Integer onlineExcelCode, String name) {
         this.excelCode = excelCode;
         this.onlineExcelCode = onlineExcelCode;
@@ -68,6 +56,18 @@ public enum ExcelCenterStyleEnum {
             }
         }
         return CENTER;
+    }
+
+    public Integer getOnlineExcelCode() {
+        return onlineExcelCode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public short getExcelCode() {
+        return excelCode;
     }
 
 }
