@@ -154,7 +154,6 @@ public class BaseHandle {
         jsonObject.put("block_id", m.getBlock_id());
         jsonObject.put("order", m.getOrder());
         jsonObject.put("is_delete", m.getIs_delete() == null ? 0 : m.getIs_delete());
-
         jsonObject.put("json_data", m.getJson_data());
         return jsonObject;
     }
@@ -191,7 +190,6 @@ public class BaseHandle {
         if (str == null || str.indexOf(",") == -1) {
             return str;
         }
-
         String[] strs = str.split(",");
         String result = "";
         for (String s : strs) {

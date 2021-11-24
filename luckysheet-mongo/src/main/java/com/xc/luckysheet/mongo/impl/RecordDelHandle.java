@@ -30,9 +30,7 @@ public class RecordDelHandle extends BaseHandle implements IRecordDelHandle {
     @Override
     public boolean updateDataForReDel(GridRecordDataModel model) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("list_id").is(model.getList_id())
-                .and("index").is(model.getIndex()));
-
+        query.addCriteria(Criteria.where("list_id").is(model.getList_id()).and("index").is(model.getIndex()));
         Update update = new Update();
         update.set("is_delete", model.getIs_delete());
         return updateMulti(query, update);

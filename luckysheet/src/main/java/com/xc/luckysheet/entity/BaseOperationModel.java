@@ -37,6 +37,4 @@ public class BaseOperationModel implements BaseModel, Serializable {
      * 修改人id
      */
     private Long update_user_id;
-
-
 }

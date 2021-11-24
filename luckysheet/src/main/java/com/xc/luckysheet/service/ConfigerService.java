@@ -37,5 +37,4 @@ public class ConfigerService {
     public void setServerType(String servertype) {
         WebSocketConfig.servertype = servertype;
     }
-
 }

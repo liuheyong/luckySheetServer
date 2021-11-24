@@ -275,7 +275,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             maps.put("type", 1);
             String params = obj.writeValueAsString(maps);
             sendMessageToUser(session, params);
-
         }
     }
 
@@ -349,7 +348,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     private void closeConn(WebSocketSession session, boolean isError) {
         WSUserModel wsUserModel = new WSUserModel(session);
         WSUserModel.webSocketMapRemove(USER_SOCKET_SESSION_MAP, wsUserModel);
-
         if (isError) {
             log.info("窗口关闭(Error):{},当前在线人数为{}", wsUserModel.getId(), getOnlineCount());
         } else {
@@ -369,7 +367,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 log.error("用户下线群发失败:{}", ex);
             }
         }
-
     }
 
     @Override

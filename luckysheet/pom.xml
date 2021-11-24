@@ -16,6 +16,11 @@
     <description>luckysheet</description>
 
     <dependencies>
+        <!--actuator-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <!-- spring web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,12 +53,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <!---核心包-->
+        <!---common 核心包-->
         <dependency>
             <groupId>com.xc</groupId>
             <artifactId>common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!---common 核心包-->
         <!-- 数据库接口以及实现 -->
         <dependency>
             <groupId>com.xc</groupId>
@@ -65,12 +71,12 @@
             <artifactId>luckysheet-mysql</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.xc</groupId>-->
-        <!--            <artifactId>luckysheet-postgre</artifactId>-->
-        <!--            <version>${project.version}</version>-->
-        <!--        </dependency>-->
-        <!-- websocket start -->
+        <!--<dependency>-->
+        <!--    <groupId>com.xc</groupId>-->
+        <!--    <artifactId>luckysheet-postgre</artifactId>-->
+        <!--    <version>${project.version}</version>-->
+        <!--</dependency>-->
+        <!-- 数据库接口以及实现 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -163,7 +169,7 @@
     </profiles>
 
     <build>
-        <finalName>web-lockysheet-${profiles.active}</finalName>
+        <finalName>lockysheet-web-${profiles.active}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

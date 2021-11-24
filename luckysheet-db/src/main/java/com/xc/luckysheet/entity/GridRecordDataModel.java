@@ -7,12 +7,13 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 存储对象类
+ * 存储对象类 网格记录数据模型
  *
  * @author Administrator
  */
 @Data
 public class GridRecordDataModel {
+
     /**
      * 记录序列
      */
@@ -49,7 +50,6 @@ public class GridRecordDataModel {
      * 是否删除
      */
     Integer is_delete;
-
     /**
      * sheet页数据 未编号分组
      */

@@ -31,8 +31,7 @@ public class IpAndPortUtil {
     public static String getIpAddressAndPort() {
         try {
             MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
-            Set<ObjectName> objectNames = beanServer.queryNames(new ObjectName("*:type=Connector,*"),
-                    Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));
+            Set<ObjectName> objectNames = beanServer.queryNames(new ObjectName("*:type=Connector,*"), Query.match(Query.attr("protocol"), Query.value("HTTP/1.1")));
             String host = InetAddress.getLocalHost().getHostAddress();
             String port = objectNames.iterator().next().getKeyProperty("port");
             //String ipadd = "http" + "://" + host + ":" + port;
@@ -44,7 +43,6 @@ public class IpAndPortUtil {
             return "";
         }
     }
-
 
     /**
      * 获得Linux下的WebLogic的IP
@@ -74,6 +72,5 @@ public class IpAndPortUtil {
             log.error("getIpWeblogic+EXCEPTION:" + e);
         }
         return listenAddr + ":" + port;
-
     }
 }

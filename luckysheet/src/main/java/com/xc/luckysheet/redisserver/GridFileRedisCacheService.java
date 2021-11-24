@@ -16,11 +16,11 @@ import java.util.List;
 @Slf4j
 @Service
 public class GridFileRedisCacheService {
+
     @Autowired
     private RedisCacheService redisCache;
     @Autowired
     private RedisQueueService redisQueueService;
-
 
     /**
      * 批量更新数据
@@ -36,7 +36,6 @@ public class GridFileRedisCacheService {
      * 收集指令信息内容
      */
     private String qk_handle_content = "lk:handler:";
-
 
     public List<JSONObject> rgetDbDataContent(String key) {
         try {
@@ -107,12 +106,12 @@ public class GridFileRedisCacheService {
             List<String> lists = redisQueueService.popList(redisKey, String.class, 500);
             return lists;
             //单节点使用
-//            List<String> lists=redisCache.getListBySize(redisKey, -1);
-//            if(lists!=null && lists.size()>0){
-//                //从redis中删除
-//                redisCache.delList(redisKey, lists.size());
-//                return lists;
-//            }
+            //List<String> lists=redisCache.getListBySize(redisKey, -1);
+            //if(lists!=null && lists.size()>0){
+            //    //从redis中删除
+            //    redisCache.delList(redisKey, lists.size());
+            //    return lists;
+            //}
         } catch (Exception ex) {
             return null;
         }

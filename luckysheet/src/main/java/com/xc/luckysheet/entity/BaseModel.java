@@ -15,5 +15,4 @@ public interface BaseModel {
 //        errorNotSet=null;
 //        errorNotChose=null;
 //    }
-
 }

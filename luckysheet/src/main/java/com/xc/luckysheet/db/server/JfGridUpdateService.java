@@ -36,40 +36,34 @@ import java.util.*;
 @Service
 public class JfGridUpdateService {
 
-//    @Resource(name = "postgresRecordDataInsertHandle")
-//    private IRecordDataInsertHandle recordDataInsertHandle;
-//
-//    @Resource(name = "postgresRecordDataUpdataHandle")
-//    private IRecordDataUpdataHandle recordDataUpdataHandle;
-//
-//    @Resource(name = "postgresRecordDelHandle")
-//    private IRecordDelHandle recordDelHandle;
-//
-//    @Resource(name = "postgresRecordSelectHandle")
-//    private IRecordSelectHandle recordSelectHandle;
+    //@Resource(name = "postgresRecordDataInsertHandle")
+    //private IRecordDataInsertHandle recordDataInsertHandle;
+    //
+    //@Resource(name = "postgresRecordDataUpdataHandle")
+    //private IRecordDataUpdataHandle recordDataUpdataHandle;
+    //
+    //@Resource(name = "postgresRecordDelHandle")
+    //private IRecordDelHandle recordDelHandle;
+    //
+    //@Resource(name = "postgresRecordSelectHandle")
+    //private IRecordSelectHandle recordSelectHandle;
 
     @Resource(name = "mysqlRecordDataInsertHandle")
     private IRecordDataInsertHandle recordDataInsertHandle;
-
     @Resource(name = "mysqlRecordDataUpdataHandle")
     private IRecordDataUpdataHandle recordDataUpdataHandle;
-
     @Resource(name = "mysqlRecordDelHandle")
     private IRecordDelHandle recordDelHandle;
-
     @Resource(name = "mysqlRecordSelectHandle")
     private IRecordSelectHandle recordSelectHandle;
-
     @Autowired
     private RedisTemplate redisTemplate;
-
     @Autowired
     private GridFileRedisCacheService gridFileRedisCacheService;
 
     public static GridRecordDataModel strToModel(String list_id, String index, int status, int order) {
         String strSheet = "{\"row\":84,\"name\":\"reSheetName\",\"chart\":[],\"color\":\"\",\"index\":\"reIndex\",\"order\":reOrder,\"column\":60,\"config\":{},\"status\":reStatus,\"celldata\":[],\"ch_width\":4748,\"rowsplit\":[],\"rh_height\":1790,\"scrollTop\":0,\"scrollLeft\":0,\"visibledatarow\":[],\"visibledatacolumn\":[],\"jfgird_select_save\":[],\"jfgrid_selection_range\":{}}";
         strSheet = strSheet.replace("reSheetName", "Sheet" + index).replace("reIndex", index).replace("reOrder", order + "").replace("reStatus", status + "");
-
         JSONObject bson = JSONObject.parseObject(strSheet);
         GridRecordDataModel model = new GridRecordDataModel();
         model.setBlock_id("fblock");
@@ -512,8 +506,6 @@ public class JfGridUpdateService {
             if (_sheetPosition != null) {
                 return "index=" + index + "的sheet已经存在";
             }
-
-
             GridRecordDataModel model = new GridRecordDataModel();
             model.setList_id(gridKey);
             model.setBlock_id(JfGridConfigModel.FirstBlockID);
@@ -531,7 +523,6 @@ public class JfGridUpdateService {
             if (_mongodbKey == null) {
                 return "更新失败";
             }
-
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }

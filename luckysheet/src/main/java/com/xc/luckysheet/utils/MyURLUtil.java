@@ -14,6 +14,7 @@ import java.net.URLEncoder;
  * @author Administrator
  */
 public class MyURLUtil {
+
     /**
      * 解码
      *
@@ -59,5 +60,4 @@ public class MyURLUtil {
         }
         return null;
     }
-
 }

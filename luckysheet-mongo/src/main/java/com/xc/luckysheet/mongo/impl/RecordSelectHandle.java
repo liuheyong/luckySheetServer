@@ -36,7 +36,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
     public Integer getFirstBlockByGridKey(String listId, String index) {
         //默认获取第一块
         Document dbObject = getQueryCondition(listId, index, JfGridConfigModel.FirstBlockID);
-
         Document fieldsObject = new Document();
         fieldsObject.put("_id", false);
         fieldsObject.put("list_id", true);
@@ -67,12 +66,10 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
         dbObject.put("block_id", JfGridConfigModel.FirstBlockID);
         dbObject.put("status", 1);
         dbObject.put("is_delete", 0);
-
         Document fieldsObject = new Document();
         fieldsObject.put("_id", false);
         fieldsObject.put("list_id", true);
         fieldsObject.put("index", true);
-
         try {
             Query query = new BasicQuery(dbObject, fieldsObject);
             JSONObject jsonObject = (JSONObject) mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
@@ -81,7 +78,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             log.error(e.getMessage());
             return null;
         }
-
     }
 
     /**
@@ -94,13 +90,11 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
     @Override
     public String getFirstBlockRowColByGridKey(String listId, String index) {
         Document dbObject = getQueryCondition(listId, index, JfGridConfigModel.FirstBlockID);
-
         Document fieldsObject = new Document();
         fieldsObject.put("_id", false);
         fieldsObject.put("list_id", true);
         fieldsObject.put("index", true);
         fieldsObject.put("row_col", true);
-
         try {
             Query query = new BasicQuery(dbObject, fieldsObject);
             JSONObject jsonObject = (JSONObject) mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);

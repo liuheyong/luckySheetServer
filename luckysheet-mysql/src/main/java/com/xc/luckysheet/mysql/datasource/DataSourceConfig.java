@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 public class DataSourceConfig {
 
     @Bean(name = "mysqlDataSource")
-    @ConfigurationProperties(prefix = "db.mysql.druid")
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource postgreDataSource() {
         DataSource dataSource = DataSourceBuilder.create().type(DruidDataSource.class).build();
         log.debug("数据源 mysql：{}", dataSource);

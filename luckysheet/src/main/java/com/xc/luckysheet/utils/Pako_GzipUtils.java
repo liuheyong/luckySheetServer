@@ -20,6 +20,7 @@ import java.util.zip.GZIPOutputStream;
  */
 @Slf4j
 public class Pako_GzipUtils {
+
     // private static final Logger logger = Logger.getLogger(MyGzipUtils.class);
 
     private static final int BUFFER_SIZE = 1024;
@@ -101,7 +102,6 @@ public class Pako_GzipUtils {
             log.error("gzip uncompress:" + str, e);
         }
         return "";
-
     }
 
     /**
@@ -166,10 +166,10 @@ public class Pako_GzipUtils {
 
     public static void main(String[] args) {
         String str = "[{\"t\":\"v\",\"i\":1,\"v\":\"运输设备\",\"r\":1,\"c\":2}]";
-//        System.out.println(compress2URI(str));
-//
-//        String str1="%1F%C2%8B%08%00%00%00%00%00%00%00%C2%8B%C2%AEV*Q%C2%B2R*S%C3%92Q%C3%8AT%C2%B22%C3%94%01%C2%B2%C2%AC%C2%94%5E%C3%AC%C2%9F%C3%B0b%C3%9F%C3%A4%17%C3%AB%C3%B6%3D%5D%C3%92%0E%C2%94%28%02K%24%2BY%19%C3%95%C3%86%02%00%C3%93%C2%AD%C2%96%C3%920%00%00%00";
-//        System.out.println(unCompressURI(str1));
+        //System.out.println(compress2URI(str));
+        //
+        //String str1="%1F%C2%8B%08%00%00%00%00%00%00%00%C2%8B%C2%AEV*Q%C2%B2R*S%C3%92Q%C3%8AT%C2%B22%C3%94%01%C2%B2%C2%AC%C2%94%5E%C3%AC%C2%9F%C3%B0b%C3%9F%C3%A4%17%C3%AB%C3%B6%3D%5D%C3%92%0E%C2%94%28%02K%24%2BY%19%C3%95%C3%86%02%00%C3%93%C2%AD%C2%96%C3%920%00%00%00";
+        //System.out.println(unCompressURI(str1));
 
         String _result1 = compressToURI(str);
         System.out.println(_result1);
@@ -229,7 +229,6 @@ public class Pako_GzipUtils {
     }
 
     public static String readGZip(MultipartFile fileUpload) {
-
         GZIPInputStream gzipInputStream = null;
         ByteArrayOutputStream baos = null;
         try {
@@ -271,6 +270,4 @@ public class Pako_GzipUtils {
         }
         return "";
     }
-
-
 }

@@ -11,7 +11,6 @@ http://localhost:9004/luckysheet/test/dbInit
 src/com/xc/luckysheet/controller/TestController
 ```
 
-
 ## 项目中使用
 1、luckysheet中的pom.xml 注释postgre，引入mongo
 ```aidl

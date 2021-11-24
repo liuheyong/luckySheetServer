@@ -21,8 +21,7 @@ import java.util.Map;
 public class MyWebSocketInterceptor extends HttpSessionHandshakeInterceptor {
 
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
-                                   Map<String, Object> attributes) throws Exception {
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) {
         //解决The extension [x-webkit-deflate-frame] is not supported问题
         //if (request.getHeaders().containsKey("Sec-WebSocket-Extensions")) {
         //    request.getHeaders().set("Sec-WebSocket-Extensions", "permessage-deflate");
@@ -50,7 +49,6 @@ public class MyWebSocketInterceptor extends HttpSessionHandshakeInterceptor {
         }
         return true;
     }
-
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {

@@ -6,6 +6,7 @@ package com.xc.luckysheet.util;
  * @author Administrator
  */
 public class SnowFlake {
+
     // 起始的时间戳
     private final static long START_STMP = 1577808000000L; //2020-01-01
     // 每一部分占用的位数，就三个
@@ -25,8 +26,6 @@ public class SnowFlake {
     private long sequence = 0L; //序列号
     private long lastStmp = -1L; //上一次时间戳
 
-    //1323969484872069121
-    //1323969557093789698
     public SnowFlake(long datacenterId, long machineId) {
         if (datacenterId > MAX_DATACENTER_NUM || datacenterId < 0) {
             throw new IllegalArgumentException("datacenterId can't be greater than MAX_DATACENTER_NUM or less than 0");

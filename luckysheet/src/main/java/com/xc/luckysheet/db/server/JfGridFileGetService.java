@@ -26,33 +26,28 @@ import java.util.stream.Collectors;
 @Service
 public class JfGridFileGetService {
 
-//    @Resource(name = "postgresRecordDataInsertHandle")
-//    private IRecordDataInsertHandle recordDataInsertHandle;
-//
-//    @Resource(name = "postgresRecordDataUpdataHandle")
-//    private IRecordDataUpdataHandle recordDataUpdataHandle;
-//
-//    @Resource(name = "postgresRecordDelHandle")
-//    private IRecordDelHandle recordDelHandle;
-//
-//    @Resource(name = "postgresRecordSelectHandle")
-//    private IRecordSelectHandle recordSelectHandle;
+    //@Resource(name = "postgresRecordDataInsertHandle")
+    //private IRecordDataInsertHandle recordDataInsertHandle;
+    //
+    //@Resource(name = "postgresRecordDataUpdataHandle")
+    //private IRecordDataUpdataHandle recordDataUpdataHandle;
+    //
+    //@Resource(name = "postgresRecordDelHandle")
+    //private IRecordDelHandle recordDelHandle;
+    //
+    //@Resource(name = "postgresRecordSelectHandle")
+    //private IRecordSelectHandle recordSelectHandle;
 
     @Resource(name = "mysqlRecordDataInsertHandle")
     private IRecordDataInsertHandle recordDataInsertHandle;
-
     @Resource(name = "mysqlRecordDataUpdataHandle")
     private IRecordDataUpdataHandle recordDataUpdataHandle;
-
     @Resource(name = "mysqlRecordDelHandle")
     private IRecordDelHandle recordDelHandle;
-
     @Resource(name = "mysqlRecordSelectHandle")
     private IRecordSelectHandle recordSelectHandle;
-
     @Autowired
     private GridFileRedisCacheService redisService;
-
 
     /**
      * 1.3.3	获取表格数据 按gridKey获取,默认载入status为1

@@ -14,6 +14,7 @@ import java.util.*;
  */
 @Slf4j
 public class XlsSheetUtil {
+
     /**
      * 导出sheet
      *
@@ -38,8 +39,6 @@ public class XlsSheetUtil {
         if (dbObject.containsKey("status") && dbObject.get("status").toString().equals("1")) {
             sheet.setSelected(true);
         }
-
-
         //循环数据
         if (dbObject.containsKey("celldata") && dbObject.get("celldata") != null) {
             //取到所有单元格集合
@@ -54,9 +53,7 @@ public class XlsSheetUtil {
                 }
             }
         }
-
         setColumAndRow(dbObject, sheet);
-
     }
 
     /**
@@ -85,7 +82,6 @@ public class XlsSheetUtil {
                         }
                         return;
                     }
-
                     //转换v为对象(v是一个对象)
                     JSONObject v_json = (JSONObject) obj;
                     //样式
@@ -128,8 +124,6 @@ public class XlsSheetUtil {
                             return;
                         }
                     }
-
-
                     //取v值 (在数据类型中处理)
                     //ct 单元格值格式 (fa,t)
                     setFormatByCt(wb, cell, style, v_json);
@@ -328,7 +322,6 @@ public class XlsSheetUtil {
                 }
             }
         }
-
     }
 
     /**
@@ -357,7 +350,6 @@ public class XlsSheetUtil {
                 if (bs.equals("bs") || bs.equals("bs_r")) {
                     style.setBorderRight(BorderStyle.valueOf(_v.shortValue()));
                 }
-
                 //bc 边框颜色
                 String _vcolor = getByDBObject(dbObject, bc);
                 if (_vcolor != null) {
@@ -380,7 +372,6 @@ public class XlsSheetUtil {
             }
         }
     }
-
 
     /**
      * 设置单元格格式  ct 单元格值格式 (fa,t)
@@ -448,9 +439,7 @@ public class XlsSheetUtil {
             } else {
                 cell.setCellValue(obj.toString());
             }
-
         }
-
         if (dbObject.containsKey("ct")) {
             JSONObject ct = dbObject.getJSONObject("ct");
             if (ct.containsKey("fa") && ct.containsKey("t")) {
@@ -583,7 +572,6 @@ public class XlsSheetUtil {
         }
         return cellMap;
     }
-
 
     /**
      * 获取一个k的值

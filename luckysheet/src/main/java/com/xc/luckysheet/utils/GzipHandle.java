@@ -13,6 +13,7 @@ import java.util.List;
  */
 @Slf4j
 public class GzipHandle {
+
     /**
      * 是否对celldata的数据压缩(分块存储，不再使用压缩)
      */
@@ -89,5 +90,4 @@ public class GzipHandle {
         }
         return list;
     }
-
 }

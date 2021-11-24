@@ -28,7 +28,6 @@ public class TestUtil {
         System.out.println(test1.toString(SerializerFeature.WriteMapNullValue));
         System.out.println(test1.toJSONString(SerializerFeature.WriteMapNullValue));
 
-
         String str = "{\"day1\":\"2019-10-10\",\"day2\":null}";
         JSONObject db = JSONObject.parseObject(str);
         System.out.println(db.toString());

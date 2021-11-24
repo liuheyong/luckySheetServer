@@ -32,7 +32,6 @@ public class ColorUtil {
                     int red = Integer.parseInt(colors[0].trim(), 16);
                     int green = Integer.parseInt(colors[1].trim(), 16);
                     int blue = Integer.parseInt(colors[2].trim(), 16);
-
                     HSSFColor hssfColor = palette.findSimilarColor(red, green, blue);
                     return hssfColor.getIndex();
                 } catch (Exception ex) {
@@ -42,7 +41,6 @@ public class ColorUtil {
             }
             return null;
         }
-
         if (colorStr.equals("#000")) {
             colorStr = "#000000";
         }
@@ -111,11 +109,11 @@ public class ColorUtil {
                 byte[] argb = xssfColor.getARGB();
                 fillColorString = convertRGBToHex((short) (argb[1] & 0xFF), (short) (argb[2] & 0xFF), (short) (argb[3] & 0xFF));
                 // TODO: 2021/4/26 添加透明度
-//                if (xssfColor.hasTint()) {
-//                    fillColorString += " * " + xssfColor.getTint();
-//                    byte[] rgb = xssfColor.getRGBWithTint();
-//                    fillColorString += " = [" + (argb[0] & 0xFF) + ", " + (rgb[0] & 0xFF) + ", " + (rgb[1] & 0xFF) + ", " + (rgb[2] & 0xFF) + "]";
-//                }
+                //if (xssfColor.hasTint()) {
+                //    fillColorString += " * " + xssfColor.getTint();
+                //    byte[] rgb = xssfColor.getRGBWithTint();
+                //    fillColorString += " = [" + (argb[0] & 0xFF) + ", " + (rgb[0] & 0xFF) + ", " + (rgb[1] & 0xFF) + ", " + (rgb[2] & 0xFF) + "]";
+                //}
             } else if (color instanceof HSSFColor) {
                 HSSFColor hssfColor = (HSSFColor) color;
                 short[] rgb = hssfColor.getTriplet();
@@ -128,5 +126,4 @@ public class ColorUtil {
         }
         return fillColorString;
     }
-
 }

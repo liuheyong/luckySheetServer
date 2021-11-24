@@ -79,7 +79,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
                     return models.size();
                     //这个方法设定更新记录数，通常List里面存放的都是我们要更新的，所以返回list.size();
                 }
-
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
                     GridRecordDataModel linkset = models.get(i);
                     ps.setInt(1, linkset.getOrder());
@@ -261,7 +260,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
         try {
             log.info("select:" + query.toString(SerializerFeature.WriteMapNullValue));
             Map<String, Object> queryDB = query.getInnerMap();
-
             List arr = new ArrayList<>();
             for (String key : queryDB.keySet()) {
                 arr.add(queryDB.get(key));
@@ -290,7 +288,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             String sql1 = "update " + JfGridConfigModel.TABLENAME + " set status=0  where  list_id=? and status=1 and block_id=?";
             log.info("updateSql1:" + sql1);
             jdbcTemplate_postgresql.update(sql1, new Object[]{model.getList_id(), model.getBlock_id()});
-
             String sql2 = "update " + JfGridConfigModel.TABLENAME + " set status=1  where  list_id=? and index=? and block_id=?";
             log.info("updateSql2:" + sql2);
             jdbcTemplate_postgresql.update(sql2, new Object[]{model.getList_id(), model.getIndex(), model.getBlock_id()});
@@ -342,7 +339,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             String sql1 = "update " + JfGridConfigModel.TABLENAME + " set status=0  where  list_id=?  and block_id=?";
             log.info("updateSql1:" + sql1);
             jdbcTemplate_postgresql.update(sql1, new Object[]{model.getList_id(), model.getBlock_id()});
-
             String sql2 = "update " + JfGridConfigModel.TABLENAME + " set status=1 ,json_data=jsonb_set(json_data,'{hide}'::text[],'" + hide + "',true) where  list_id='" + model.getList_id() + "' and index='" + index + "' and block_id='" + model.getBlock_id() + "'";
             log.info("updateSql2:" + sql2);
             jdbcTemplate_postgresql.update(sql2);
@@ -396,8 +392,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             jdbcTemplate_postgresql.batchUpdate(sql, batch);
             log.info("batchUpdateCellDataValue--end");
             return true;
-
-
         } catch (Exception ex) {
             log.error(ex.getMessage());
             return false;

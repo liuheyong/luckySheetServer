@@ -39,23 +39,23 @@ INSERT INTO luckysheet VALUES (139400313311449089, 'fblock', '', '3', '1079500#-
 
 ## 项目中使用
 1、luckysheet中的pom.xml 注释postgre，引入mysql
-```aidl
-        <!-- 数据库接口以及实现 -->
-        <dependency>
-            <groupId>com.xc</groupId>
-            <artifactId>luckysheet-db</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.xc</groupId>
-            <artifactId>luckysheet-mysql</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.xc</groupId>-->
-            <!--<artifactId>luckysheet-postgre</artifactId>-->
-            <!--<version>${project.version}</version>-->
-        <!--</dependency>-->
+```
+    <!-- 数据库接口以及实现 -->
+    <dependency>
+        <groupId>com.xc</groupId>
+        <artifactId>luckysheet-db</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.xc</groupId>
+        <artifactId>luckysheet-mysql</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+    <!--<dependency>-->
+        <!--<groupId>com.xc</groupId>-->
+        <!--<artifactId>luckysheet-postgre</artifactId>-->
+        <!--<version>${project.version}</version>-->
+    <!--</dependency>-->
 ```
 
 2、com.xc.luckysheet.db.server 文件夹中

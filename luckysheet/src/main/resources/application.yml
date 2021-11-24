@@ -1,13 +1,13 @@
 # 配置server参数
 server:
-  port: 9004
+  port: 9000
   servlet:
     context-path: /luckysheet
 spring:
   profiles:
-    active: @profiles.active@
+    active: mysql
   application:
-    name: web
+    name: luckysheet
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
@@ -23,6 +23,3 @@ row_size: 500
 col_size: 500
 #使用服务器类型
 servertype: tomcat
-
-
-

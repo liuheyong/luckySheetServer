@@ -23,7 +23,6 @@ redis >= 3
 - [Docker部署Redis](https://www.cnblogs.com/xuchen0117/p/12183399.html)
 - [Docker部署Redis集群](https://www.cnblogs.com/xuchen0117/p/11678931.html)
 
-
 nginx >= 1.12
 - [Docker部署Nginx](https://www.cnblogs.com/xuchen0117/p/11934202.html)
 

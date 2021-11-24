@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Data
 @Service
 public class RedisMessagePublish {
+
     /**
      * 管道
      */
@@ -40,5 +41,4 @@ public class RedisMessagePublish {
             return false;
         }
     }
-
 }

@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * @author Administrator
- * 表格块对象
+ * 表格块对象 Jf网格配置模型
  */
 @Slf4j
 public class JfGridConfigModel {
@@ -74,7 +74,6 @@ public class JfGridConfigModel {
             return col_size;
         }
     }
-
 
     /**
      * 获取块的范围
@@ -189,7 +188,6 @@ public class JfGridConfigModel {
                     }
                 }
             }
-
             //替换原始的数据
             //if(pos.containsKey(FirstBlockID)){
             //    sheet.put("celldata",datas.get(pos.get(FirstBlockID)));
@@ -216,13 +214,9 @@ public class JfGridConfigModel {
                 list.add(_sheet);
                 //_sheet.put("order",order);
             }
-
         } else {
             list.add(sheet);
         }
         return list;
-
     }
-
-
 }

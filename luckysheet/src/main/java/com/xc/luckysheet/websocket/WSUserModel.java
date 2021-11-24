@@ -56,10 +56,8 @@ public class WSUserModel {
         } else {
             this.gridKey = "1";
         }
-
         this.ws = ws;
     }
-
 
     /**
      * 外层key gridKey（文档id），内层key session ID（用户id）
@@ -87,5 +85,4 @@ public class WSUserModel {
             }
         }
     }
-
 }

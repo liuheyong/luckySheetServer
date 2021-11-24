@@ -92,7 +92,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             String sql = "select id,block_id,index,list_id,status,json_data-'celldata' AS json_data,\"order\" from " + JfGridConfigModel.TABLENAME + " p where p.list_id=? and p.block_id=? and p.is_delete=0  order by p.order";
             List<Map<String, Object>> list = jdbcTemplate_postgresql.queryForList(sql, new Object[]{listId, JfGridConfigModel.FirstBlockID});
             List<JSONObject> result = new ArrayList<JSONObject>();
-
             for (Map<String, Object> map : list) {
                 JSONObject pgd = null;
                 try {
@@ -153,7 +152,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             String sql = "select index,json_data->>'celldata' AS celldata,json_data->>'column' AS column,json_data->>'row' AS row from " + JfGridConfigModel.TABLENAME + " p where  p.list_id=? and p.index=? and p.block_id=? and p.is_delete=0 ORDER BY p.id DESC LIMIT 1 ";
             Map<String, Object> map = jdbcTemplate_postgresql.queryForMap(sql, new Object[]{listId, index, blockId});
             JSONObject db = new JSONObject();
-
             for (String key : map.keySet()) {
                 if ("celldata".equals(key)) {
                     JSONObject pgd = null;
@@ -188,7 +186,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             String sql = "select index,list_id,json_data->>'config' AS config,json_data->>'calcChain' AS calcChain,json_data->>'filter' AS filter from " + JfGridConfigModel.TABLENAME + " p where p.list_id=? and p.index=? and p.block_id=? and p.is_delete=0 ";
             Map<String, Object> map = jdbcTemplate_postgresql.queryForMap(sql, new Object[]{listId, index, JfGridConfigModel.FirstBlockID});
             JSONObject db = new JSONObject();
-
             for (String key : map.keySet()) {
                 if ("config".equals(key) || "calcChain".equals(key) || "filter".equals(key)) {
                     JSONObject pgd = null;
@@ -360,7 +357,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             String sql = "select index,list_id,json_data->>'chart' AS chart,block_id from " + JfGridConfigModel.TABLENAME + " p where p.list_id=? and p.index=? and p.block_id=? and p.is_delete=0 ";
             Map<String, Object> map = jdbcTemplate_postgresql.queryForMap(sql, new Object[]{listId, index, JfGridConfigModel.FirstBlockID});
             JSONObject db = new JSONObject();
-
             for (String key : map.keySet()) {
                 if ("chart".equals(key)) {
                     JSONObject pgd = null;
@@ -375,7 +371,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
                     } else {
                         db.put(key.toLowerCase(), null);
                     }
-
                 } else {
                     db.put(key.toLowerCase(), map.get(key));
                 }
@@ -390,7 +385,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
 
     private JSONObject getDBObjectFromMap(Map<String, Object> map) {
         JSONObject db = new JSONObject();
-
         for (String key : map.keySet()) {
             try {
                 if ("json_data".equals(key)) {

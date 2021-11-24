@@ -167,12 +167,9 @@ public class RedisLock {
             locked = false;
         }
     }
-
 }
 
 /*
-
-
     //使用方法，创建RedisLock对象
     RedisLock lock = new RedisLock(redisTemplate, "lock_" + product.getId());
     try {
@@ -180,9 +177,4 @@ public class RedisLock {
     } finally {
         lock.unlock();
     }
-
-
-
 */
-
-

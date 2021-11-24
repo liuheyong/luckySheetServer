@@ -41,14 +41,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 //配置*代表允许所有的ip进行调用
                 .setAllowedOrigins("*").withSockJS();
 
-        //获取系统ip
+        //3.获取系统ip
         log.info("registerWebSocketHandlers:" + servertype);
         if (servertype != null && servertype.equals("weblogic")) {
             MyWebSocketHandler.ipAndPort = IpAndPortUtil.getIpWeblogic();
         } else {
             MyWebSocketHandler.ipAndPort = IpAndPortUtil.getIpAddressAndPort();
         }
-
     }
 
     @Bean

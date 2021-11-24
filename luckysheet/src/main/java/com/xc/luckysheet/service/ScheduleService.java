@@ -32,5 +32,4 @@ public class ScheduleService {
         jfGridUpdateService.initTestData();
         System.out.println(format.format(new Date()) + " luckysheet table init!!!");
     }
-
 }

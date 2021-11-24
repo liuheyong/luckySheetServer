@@ -58,7 +58,6 @@ public class RecordDataInsertHandle extends BaseHandle implements IRecordDataIns
             objectList.add(b.getStatus());
             objectList.add(b.getOrder());
             objectList.add(b.getJson_data().toJSONString());
-
             Object[] params = (Object[]) objectList.toArray(new Object[objectList.size()]);
             batch.add(params);
         }
@@ -107,7 +106,6 @@ public class RecordDataInsertHandle extends BaseHandle implements IRecordDataIns
             } else {
                 objectList.add(order);
             }
-
             JSONObject db = new JSONObject();
             if (b.containsKey("json_data")) {
                 db = (JSONObject) b.get("json_data");
@@ -115,7 +113,6 @@ public class RecordDataInsertHandle extends BaseHandle implements IRecordDataIns
                 db.put("celldata", b.get("celldata"));
             }
             objectList.add(db.toJSONString());
-
             Object[] params = (Object[]) objectList.toArray(new Object[objectList.size()]);
             batch.add(params);
         }

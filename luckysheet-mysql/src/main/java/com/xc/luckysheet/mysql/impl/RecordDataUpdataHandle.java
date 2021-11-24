@@ -251,7 +251,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
                 }
                 sb.append("t.jsontest=json_set(t.jsontest,\"$." + key + "\",null)");
             }
-
             StringBuffer updateSql = new StringBuffer();
             updateSql.append("update " + JfGridConfigModel.TABLENAME + " t set " + sb.toString());
             updateSql.append(" where 1=1 " + condition);
@@ -287,7 +286,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
                 }
                 sb.append("t.jsontest=json_set(t.jsontest,\"$." + key + "\",\"" + queryDB.get(key) + "\")");
             }
-
             StringBuffer updateSql = new StringBuffer();
             updateSql.append("update " + JfGridConfigModel.TABLENAME + " t set " + sb.toString());
             updateSql.append(" where 1=1 " + condition);
@@ -298,7 +296,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             log.error(e.getMessage());
             return false;
         }
-
     }
 
     /**
@@ -528,37 +525,37 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
     @Override
     public boolean updateJsonbForSetRootNull(JSONObject query, String word, JSONObject db, Integer position, String words) {
         return updateJsonbForInsertNull(query, word, db, position, words);
-//        try{
-//            log.info("select:"+query.toString(SerializerFeature.WriteMapNullValue));
-//            List arr=new ArrayList<>();
-//            String condition= JfGridFileUtil.getCondition(query,arr);
-//
-//            JSONObject newObj=JSONObject.parseObject("{"+words+"}");
-//            String key=JfGridFileUtil.getKeyName(newObj);
-//
-//            //不存在创建节点
-//            //String createSql="update "+JfGridConfigModel.TABLENAME+" set json_data=json_data||'{"+words+"}'::jsonb where 1=1 " +condition;
-//            String createSql="update "+JfGridConfigModel.TABLENAME+" set json_data=json_set(json_data,\"$."+key+"\",CAST('"+newObj.getString(key)+"' AS JSON)) where 1=1 " +condition+
-//                    " and JSON_CONTAINS_PATH(jsontest,'one',\"$."+key+"\")=0";
-//            log.info("createSql:{}",createSql);
-//            luckySheetJdbcTemplate.update(createSql,arr.toArray());
-//
-//            if(position!=null){
-//                word=word+","+position;
-//            }
-//            //(jsonb_v,'{myinfo,celldata,0}','{"c":1,"r":1,"v":{"con":"str"}}',false)
-//            //String updateSql="update "+JfGridConfigModel.TABLENAME+" set json_data=jsonb_set(json_data,'{"+word+"}','"+db.toString()+"',false) where 1=1 " +condition;
-//            StringBuffer updateSql=new StringBuffer();
-//            updateSql.append("update "+JfGridConfigModel.TABLENAME+" t set t.json_data=jsonb_set(t.json_data,\"$."+word+",");
-//            updateSql.append("CAST('"+db.toString(SerializerFeature.WriteMapNullValue)+"' as JSON)");
-//            updateSql.append(") where 1=1 "+condition);
-//
-//            log.info("updateSql:{}",updateSql.toString());
-//            luckySheetJdbcTemplate.update(updateSql.toString(),arr.toArray());
-//            return true;
-//        }catch (Exception ex){
-//            log.error(ex.getMessage());
-//            throw new RuntimeException(ex.getMessage());
-//        }
+        //try{
+        //    log.info("select:"+query.toString(SerializerFeature.WriteMapNullValue));
+        //    List arr=new ArrayList<>();
+        //    String condition= JfGridFileUtil.getCondition(query,arr);
+        //
+        //    JSONObject newObj=JSONObject.parseObject("{"+words+"}");
+        //    String key=JfGridFileUtil.getKeyName(newObj);
+        //
+        //    //不存在创建节点
+        //    //String createSql="update "+JfGridConfigModel.TABLENAME+" set json_data=json_data||'{"+words+"}'::jsonb where 1=1 " +condition;
+        //    String createSql="update "+JfGridConfigModel.TABLENAME+" set json_data=json_set(json_data,\"$."+key+"\",CAST('"+newObj.getString(key)+"' AS JSON)) where 1=1 " +condition+
+        //            " and JSON_CONTAINS_PATH(jsontest,'one',\"$."+key+"\")=0";
+        //    log.info("createSql:{}",createSql);
+        //    luckySheetJdbcTemplate.update(createSql,arr.toArray());
+        //
+        //    if(position!=null){
+        //        word=word+","+position;
+        //    }
+        //    //(jsonb_v,'{myinfo,celldata,0}','{"c":1,"r":1,"v":{"con":"str"}}',false)
+        //    //String updateSql="update "+JfGridConfigModel.TABLENAME+" set json_data=jsonb_set(json_data,'{"+word+"}','"+db.toString()+"',false) where 1=1 " +condition;
+        //    StringBuffer updateSql=new StringBuffer();
+        //    updateSql.append("update "+JfGridConfigModel.TABLENAME+" t set t.json_data=jsonb_set(t.json_data,\"$."+word+",");
+        //    updateSql.append("CAST('"+db.toString(SerializerFeature.WriteMapNullValue)+"' as JSON)");
+        //    updateSql.append(") where 1=1 "+condition);
+        //
+        //    log.info("updateSql:{}",updateSql.toString());
+        //    luckySheetJdbcTemplate.update(updateSql.toString(),arr.toArray());
+        //    return true;
+        //}catch (Exception ex){
+        //    log.error(ex.getMessage());
+        //    throw new RuntimeException(ex.getMessage());
+        //}
     }
 }

@@ -48,7 +48,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             }
             Query del = new Query();
             del.addCriteria(Criteria.where("_id").in(objectIdList.toArray()));
-
             BulkOperations ops = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, COLLECTION_NAME);
             ops.remove(del);
             ops.insert(blocks);
@@ -101,7 +100,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             Query q = new Query();
             q.addCriteria(tranToCriteria(query));
             //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
-
             Update u = new Update();
             u.unset("json_data." + positionHandle(keyName));
             return updateOne(q, u);
@@ -270,9 +268,7 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
         update2.set("status", 1);
         Pair<Query, Update> pair2 = Pair.of(query2, update2);
         _updates.add(pair2);
-
         return updateMulti(_updates);
-
     }
 
     /**
@@ -306,9 +302,7 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
             Pair<Query, Update> pair2 = Pair.of(query2, update2);
             _updates.add(pair2);
         }
-
         return updateMulti(_updates);
-
     }
 
     /**
@@ -339,7 +333,6 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
         Pair<Query, Update> pair2 = Pair.of(query2, update2);
         _updates.add(pair2);
         return updateMulti(_updates);
-
     }
 
     /**
@@ -392,9 +385,7 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
         BasicDBList _dlist = new BasicDBList();
         _dlist.add(db);
         update.set("json_data." + word, _dlist);
-
         return updateOne(q, update);
-
     }
 
     /**
@@ -408,15 +399,15 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
      */
     @Override
     public boolean updateJsonbForSetNull(JSONObject query, String word, JSONObject db, Integer position) {
-//        Query q=new Query();
-//        q.addCriteria(tranToCriteria(query));
-//
-//        Update update=new Update();
-//        BasicDBList _dlist=new BasicDBList();
-//        _dlist.add(db);
-//        update.set(word, _dlist);
-//
-//        return updateOne(q,update);
+        //Query q=new Query();
+        //q.addCriteria(tranToCriteria(query));
+        //
+        //Update update=new Update();
+        //BasicDBList _dlist=new BasicDBList();
+        //_dlist.add(db);
+        //update.set(word, _dlist);
+        //
+        //return updateOne(q,update);
         return updateJsonbForInsertNull(query, word, db, null, null);
     }
 
@@ -434,10 +425,8 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
     public boolean updateJsonbForSetRootNull(JSONObject query, String word, JSONObject db, Integer position, String words) {
         Query q = new Query();
         q.addCriteria(tranToCriteria(query));
-
         Update update = new Update();
         update.set("json_data." + positionHandle(word), db);
-
         return updateOne(q, update);
     }
 }
