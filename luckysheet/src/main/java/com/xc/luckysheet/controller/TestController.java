@@ -136,8 +136,6 @@ public class TestController {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             XlsUtil.exportXlsFile(baos, isXlsx, lists);
-        } catch (FileNotFoundException e) {
-            return ResponseVO.errorInstance(e.getMessage());
         } catch (IOException e) {
             return ResponseVO.errorInstance(e.getMessage());
         }

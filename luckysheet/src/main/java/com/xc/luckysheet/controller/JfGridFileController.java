@@ -70,14 +70,14 @@ public class JfGridFileController {
         }
         log.info("load");
         try {
-            byte dest[] = Pako_GzipUtils.compress2(resultStr);
+            byte[] dest = Pako_GzipUtils.compress2(resultStr);
             OutputStream out = response.getOutputStream();
             assert dest != null;
             out.write(dest);
             out.close();
             out.flush();
         } catch (Exception e) {
-            log.error("load---ioerror:" + e);
+            log.error("load---ioerror: " + e);
         }
         return null;
     }
@@ -95,7 +95,7 @@ public class JfGridFileController {
     @PostMapping("/loadsheet")
     public byte[] loadsheet(HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "") String gridKey, @RequestParam(defaultValue = "") String[] index) {
         log.info("loadsheet--gridKey:" + gridKey + " index:" + Arrays.toString(index));
-        ////告诉浏览器，当前发送的是gzip格式的内容
+        //告诉浏览器，当前发送的是gzip格式的内容
         response.setHeader("Content-Encoding", "gzip");
         response.setContentType("text/html");
         String resultStr = "";
@@ -106,8 +106,7 @@ public class JfGridFileController {
                 if (_checkStr.length() > 0) {
                     return null;
                 }
-                LinkedHashMap<?, ?> dbObject;
-                dbObject = jfGridFileGetService.getByGridKeys(gridKey, Arrays.asList(index));
+                LinkedHashMap<?, ?> dbObject = jfGridFileGetService.getByGridKeys(gridKey, Arrays.asList(index));
                 log.info("loadsheet--dbObject--");
                 if (dbObject != null) {
                     resultStr = JsonUtil.toJson(dbObject);

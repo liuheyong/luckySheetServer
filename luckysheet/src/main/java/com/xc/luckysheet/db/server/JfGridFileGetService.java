@@ -50,7 +50,7 @@ public class JfGridFileGetService {
     private GridFileRedisCacheService redisService;
 
     /**
-     * 1.3.3	获取表格数据 按gridKey获取,默认载入status为1
+     * 1.3.3 获取表格数据 按gridKey获取,默认载入status为1
      *
      * @param listId
      * @return
@@ -62,25 +62,18 @@ public class JfGridFileGetService {
         log.info("getDefaultByGridKey--dbObjectList:start");
         if (dbObject != null && dbObject.size() > 0) {
             log.info("getDefaultByGridKey--start---dbObject");
-            for (int x = 0; x < dbObject.size(); x++) {
-                JSONObject _o = dbObject.get(x);
+            for (JSONObject _o : dbObject) {
                 if (_o.containsKey("status") && _o.get("status").toString().equals("1")) {
-                    //获取当前显示的数据
-                    //DBObject n=jfGridFileDao.getByGridKey(gridKey,Integer.parseInt(_o.get("index").toString()));
-                    //dbObject.set(x,n);
                     String index = _o.get("index").toString();
                     //覆盖当前对象的数据信息
                     JSONArray _celldata = getCelldataBlockMergeByGridKey(listId, index);
                     _o.put("celldata", _celldata);
                 }
-
                 if (_o.containsKey("calcChain")) {
                     Object calcChain = JfGridFileUtil.getObjectByIndex(_o, "calcChain");
-
                     log.info("calcChain--" + calcChain);
                     _o.put("calcChain", calcChain);
                 }
-
             }
         }
         log.info("dbObject:true");
@@ -102,9 +95,7 @@ public class JfGridFileGetService {
         if (blocks != null && blocks.size() > 0) {
             for (JSONObject _b : blocks) {
                 if (_b.containsKey("block_id")) {
-                    if (JfGridConfigModel.FirstBlockID.equals(_b.get("block_id"))) {
-                        //信息块
-                    } else {
+                    if (!JfGridConfigModel.FirstBlockID.equals(_b.get("block_id"))) {
                         //数据块
                         JSONObject db = JfGridFileUtil.getJSONObjectByIndex(_b, "json_data");
                         JSONArray _blockCellData = JfGridFileUtil.getSheetByIndex(db);
@@ -130,29 +121,26 @@ public class JfGridFileGetService {
     }
 
     /**
-     * 1.3.4	获取sheet数据  参数为gridKey（表格主键） 和 index（sheet主键合集
+     * 1.3.4 获取sheet数据  参数为gridKey（表格主键） 和 index（sheet主键合集）
      *
      * @param listId
      * @param indexs
      * @return
      */
-    public LinkedHashMap getByGridKeys(String listId, List<String> indexs) {
-        LinkedHashMap _resultModel = null;
+    public LinkedHashMap<Integer, Object> getByGridKeys(String listId, List<String> indexs) {
+        LinkedHashMap<Integer, Object> _resultModel = null;
         if (indexs == null || indexs.size() == 0) {
-            return _resultModel;
+            return null;
         }
         //获取全部多个sheet的分块
-        List<JSONObject> dbObject = null;
+        List<JSONObject> dbObject;
         if (indexs.size() == 1) {
             dbObject = recordSelectHandle.getIndexsByGridKey(listId, indexs.get(0));
         } else {
-            dbObject = recordSelectHandle.getAllIndexsByGridKey(listId.toString(), indexs);
+            dbObject = recordSelectHandle.getAllIndexsByGridKey(listId, indexs);
         }
-
         if (dbObject != null && dbObject.size() > 0) {
-            if (_resultModel == null) {
-                _resultModel = new LinkedHashMap<Integer, Object>();
-            }
+            _resultModel = new LinkedHashMap<>();
             log.info("getByGridKeys--dbObject-start");
             for (JSONObject _o : dbObject) {
                 if (!_o.containsKey("block_id")) {
@@ -171,11 +159,11 @@ public class JfGridFileGetService {
                             JSONObject data = JfGridFileUtil.getJSONObjectByIndex(_o, "json_data");
                             JSONArray _cellData = JfGridFileUtil.getSheetByIndex(data);
                             if (_cellData != null) {
-                                if (_resultModel.containsKey(_index)) {
-                                    JSONArray _blockCellData = (JSONArray) _resultModel.get(_index);
+                                if (_resultModel.containsKey(Integer.valueOf(_index))) {
+                                    JSONArray _blockCellData = (JSONArray) _resultModel.get(Integer.valueOf(_index));
                                     _blockCellData.addAll(_cellData);
                                 } else {
-                                    _resultModel.put(_index, _cellData);
+                                    _resultModel.put(Integer.valueOf(_index), _cellData);
                                 }
                             }
                         }

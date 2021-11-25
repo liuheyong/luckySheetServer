@@ -66,16 +66,14 @@ public class JfGridFileUtil {
      * @return
      */
     public static Integer getSheetCount(JSONObject dbObject) {
-        Integer _resultModel = 0;
+        int _resultModel = 0;
         if (dbObject != null) {
             if (dbObject.containsKey("jfgridfile")) {
                 JSONObject _bs = dbObject.getJSONObject("jfgridfile");
                 return getSheetCount(_bs);
             } else if (dbObject instanceof List) {
                 List<JSONObject> _list = (List<JSONObject>) dbObject;
-                if (_list != null) {
-                    _resultModel = _list.size();
-                }
+                _resultModel = _list.size();
             }
         }
         return _resultModel;
@@ -170,7 +168,7 @@ public class JfGridFileUtil {
      */
     public static JSONObject getObjectByIndex(JSONObject dbObject, Integer index, String k) {
         JSONObject _resultModel = null;
-        if (dbObject != null && dbObject instanceof List) {
+        if (dbObject instanceof List) {
             List<JSONObject> _list = (List<JSONObject>) dbObject;
             for (JSONObject _o : _list) {
                 if (_o.containsKey("index")) {
@@ -238,7 +236,7 @@ public class JfGridFileUtil {
      */
     public static Integer getIntegerByIndex(JSONObject dbObject, Integer index, String k) {
         Integer _resultModel = null;
-        if (dbObject != null && dbObject instanceof List) {
+        if (dbObject instanceof List) {
             List<JSONObject> _list = (List<JSONObject>) dbObject;
             for (JSONObject _o : _list) {
                 if (_o.containsKey("index")) {

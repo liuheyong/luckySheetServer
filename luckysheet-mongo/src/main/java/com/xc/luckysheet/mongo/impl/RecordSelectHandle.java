@@ -42,7 +42,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
         fieldsObject.put("index", true);
         try {
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject = (JSONObject) mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
             if (jsonObject == null) {
                 return null;
             }
@@ -72,7 +72,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
         fieldsObject.put("index", true);
         try {
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject = (JSONObject) mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
             return getStringByKey(jsonObject, "index");
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -97,7 +97,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
         fieldsObject.put("row_col", true);
         try {
             Query query = new BasicQuery(dbObject, fieldsObject);
-            JSONObject jsonObject = (JSONObject) mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
             return getStringByKey(jsonObject, "row_col");
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -147,8 +147,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             query.addCriteria(Criteria.where("list_id").is(listId)
                     .and("index").in(index)
                     .and("is_delete").is(0));
-            List<JSONObject> jsonObjects = mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
-            return jsonObjects;
+            return mongoTemplate.find(query, JSONObject.class, COLLECTION_NAME);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -176,6 +175,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             fieldsObject.put("json_data.row", true);
             Query query = new BasicQuery(dbObject, fieldsObject);
             JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            assert jsonObject != null;
             cellDataHandle(jsonObject);
             return jsonObject;
         } catch (Exception e) {
@@ -206,6 +206,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             fieldsObject.put("block_id", true);
             Query query = new BasicQuery(dbObject, fieldsObject);
             JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            assert jsonObject != null;
             cellDataHandle(jsonObject);
             return jsonObject;
         } catch (Exception e) {
@@ -352,6 +353,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
             fieldsObject.put("block_id", true);
             Query query = new BasicQuery(dbObject, fieldsObject);
             JSONObject jsonObject = mongoTemplate.findOne(query, JSONObject.class, COLLECTION_NAME);
+            assert jsonObject != null;
             cellDataHandle(jsonObject);
             return jsonObject;
         } catch (Exception e) {

@@ -40,7 +40,7 @@ public class RecordDataUpdataHandle extends BaseHandle implements IRecordDataUpd
     @Override
     public Boolean updateMulti2(List<JSONObject> blocks, List<String> ids) {
         try {
-            List<ObjectId> objectIdList = new ArrayList<ObjectId>();
+            List<ObjectId> objectIdList = new ArrayList<>();
             if (ids != null && ids.size() > 0) {
                 for (String s : ids) {
                     objectIdList.add(new ObjectId(s));

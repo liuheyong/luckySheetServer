@@ -33,23 +33,23 @@ public class BaseHandle {
      * @return
      */
     protected String positionHandle(String str) {
-        if (str == null || str.indexOf(",") == -1) {
+        if (str == null || !str.contains(",")) {
             return str;
         }
         String[] strs = str.split(",");
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String s : strs) {
             if (result.length() == 0) {
-                result = s;
+                result = new StringBuilder(s);
             } else {
                 if (isNumeric(s)) {
-                    result += "[" + s + "]";
+                    result.append("[").append(s).append("]");
                 } else {
-                    result += "." + s;
+                    result.append(".").append(s);
                 }
             }
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -60,9 +60,6 @@ public class BaseHandle {
      */
     protected boolean isNumeric(String str) {
         Matcher isNum = patternIsNumeric.matcher(str);
-        if (!isNum.matches()) {
-            return false;
-        }
-        return true;
+        return isNum.matches();
     }
 }

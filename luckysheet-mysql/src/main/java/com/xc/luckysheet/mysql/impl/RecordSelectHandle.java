@@ -89,13 +89,11 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
         try {
             String sql = "select id,block_id,`index`,list_id,status, json_remove(json_data,'$.celldata') AS json_data,`order` from " + JfGridConfigModel.TABLENAME + " p where p.list_id=? and p.block_id=? and p.is_delete=0  order by p.order";
             List<Map<String, Object>> list = luckySheetJdbcTemplate.queryForList(sql, new Object[]{listId, JfGridConfigModel.FirstBlockID});
-            List<JSONObject> result = new ArrayList<JSONObject>();
-
+            List<JSONObject> result = new ArrayList<>();
             for (Map<String, Object> map : list) {
                 JSONObject pgd = JSONObject.parseObject(map.get("json_data").toString(), JSONObject.class);
                 for (String key : map.keySet()) {
-                    if ("json_data".equals(key)) {
-                    } else {
+                    if (!"json_data".equals(key)) {
                         pgd.put(key.toLowerCase(), map.get(key));
                     }
                 }
@@ -118,9 +116,9 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
     @Override
     public List<JSONObject> getBlockAllByGridKey(String listId, String index) {
         try {
-            String sql = "select * from " + JfGridConfigModel.TABLENAME + " p where  p.list_id=? and p.index =? and p.is_delete=0 order by p.order asc";
+            String sql = "select * from " + JfGridConfigModel.TABLENAME + " p where p.list_id=? and p.index =? and p.is_delete=0 order by p.order asc";
             List<Map<String, Object>> list = luckySheetJdbcTemplate.queryForList(sql, new Object[]{listId, index});
-            List<JSONObject> result = new ArrayList<JSONObject>(4);
+            List<JSONObject> result = new ArrayList<>(4);
             for (Map<String, Object> map : list) {
                 result.add(getDBObjectFromMap(map));
             }
@@ -178,7 +176,7 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
 
             for (String key : map.keySet()) {
                 if ("config".equals(key) || "calcChain".equals(key) || "filter".equals(key)) {
-                    JSONObject pgd = null;
+                    JSONObject pgd;
                     try {
                         if (map.get(key) != null) {
                             pgd = JSONObject.parseObject(map.get(key).toString(), JSONObject.class);
@@ -282,22 +280,22 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
     @Override
     public List<JSONObject> getAllIndexsByGridKey(String listId, List<String> indexs) {
         try {
-            StringBuffer sql = new StringBuffer();
+            StringBuilder sql = new StringBuilder();
             sql.append("select * from " + JfGridConfigModel.TABLENAME + " p where  p.list_id=? and p.index in (");
-            String mockInStatement = "";
+            StringBuilder mockInStatement = new StringBuilder();
             int i = 0;
             for (String type : indexs) {
                 if (i < indexs.size() - 1) {
-                    mockInStatement = mockInStatement + "'" + type + "',";
+                    mockInStatement.append("'").append(type).append("',");
                 } else {
-                    mockInStatement = mockInStatement + "'" + type + "'";
+                    mockInStatement.append("'").append(type).append("'");
                 }
                 i++;
             }
             sql.append(mockInStatement);
             sql.append(") and p.is_delete=0 order by p.order asc");
-            List<Map<String, Object>> list = luckySheetJdbcTemplate.queryForList(sql.toString(), new Object[]{listId});
-            List<JSONObject> result = new ArrayList<JSONObject>();
+            List<Map<String, Object>> list = luckySheetJdbcTemplate.queryForList(sql.toString(), listId);
+            List<JSONObject> result = new ArrayList<>();
             for (Map<String, Object> map : list) {
                 result.add(getDBObjectFromMap(map));
             }
@@ -318,10 +316,8 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
     @Override
     public List<JSONObject> getIndexsByGridKey(String listId, String index) {
         try {
-            StringBuffer sql = new StringBuffer();
-            sql.append("select * from " + JfGridConfigModel.TABLENAME + " p where  p.list_id=? and p.index =? and p.is_delete=0 order by p.id asc ");
-            List<Map<String, Object>> list = luckySheetJdbcTemplate.queryForList(sql.toString(), new Object[]{listId, index});
-            List<JSONObject> result = new ArrayList<JSONObject>();
+            List<Map<String, Object>> list = luckySheetJdbcTemplate.queryForList("select * from " + JfGridConfigModel.TABLENAME + " p where  p.list_id=? and p.index =? and p.is_delete=0 order by p.id asc ", new Object[]{listId, index});
+            List<JSONObject> result = new ArrayList<>();
             for (Map<String, Object> map : list) {
                 result.add(getDBObjectFromMap(map));
             }
@@ -359,7 +355,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
                     } else {
                         db.put(key.toLowerCase(), null);
                     }
-
                 } else {
                     db.put(key.toLowerCase(), map.get(key));
                 }
@@ -373,11 +368,10 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
 
     private JSONObject getDBObjectFromMap(Map<String, Object> map) {
         JSONObject db = new JSONObject();
-
         for (String key : map.keySet()) {
             try {
                 if ("json_data".equals(key)) {
-                    JSONObject pgd = null;
+                    JSONObject pgd;
                     try {
                         pgd = JSONObject.parseObject(map.get(key).toString(), JSONObject.class);
                     } catch (Exception e) {
@@ -389,7 +383,6 @@ public class RecordSelectHandle extends BaseHandle implements IRecordSelectHandl
                 }
             } catch (Exception e) {
                 log.error(e.toString());
-                continue;
             }
         }
         return db;
