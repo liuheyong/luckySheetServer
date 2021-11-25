@@ -14,8 +14,7 @@ public enum DisabledTypeEnum {
     /**
      * 禁用
      */
-    DISABLE(1, "禁用"),
-    ;
+    DISABLE(1, "禁用");
 
     /**
      * index

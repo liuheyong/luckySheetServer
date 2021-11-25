@@ -10,9 +10,9 @@ public interface BaseModel {
     String errorNotSet = "未设置";
     String errorNotChose = "未选择";
 
-//    public void del(){
-//        errorNotBlank=null;
-//        errorNotSet=null;
-//        errorNotChose=null;
-//    }
+    //public void del(){
+    //    errorNotBlank=null;
+    //    errorNotSet=null;
+    //    errorNotChose=null;
+    //}
 }

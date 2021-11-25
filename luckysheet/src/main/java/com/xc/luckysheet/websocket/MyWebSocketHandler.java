@@ -34,7 +34,7 @@ import java.util.Map;
  * 因为websocket传输大小限制
  * 批量更新范围单元格的时候
  * 一次最多1000个单元格
- * 要求 每次传'rv'  最后一次传他'rv_end'
+ * 要求 每次传'rv'  最后一次传'rv_end'
  * rv_end就是个信号
  * 表示这次范围更新数据全部传输完,它自身这次不带数据过去的
  *
@@ -56,7 +56,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     private static int onlineCount = 0;
 
     static {
-        USER_SOCKET_SESSION_MAP = new Hashtable<String, Hashtable<String, WSUserModel>>(12);
+        USER_SOCKET_SESSION_MAP = new Hashtable<>(12);
     }
 
     @Autowired
@@ -66,7 +66,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     @Autowired
     private JfGridFileGetService jfGridFileGetService;
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<?, ?> redisTemplate;
     @Autowired
     private GridFileRedisCacheService redisService;
 
@@ -109,12 +109,17 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             TextMessage message = new TextMessage(_content);
             //BinaryMessage message= new BinaryMessage(_content.getBytes());
             _userMap.forEach((k, v) -> {
-                if (null == _uid || !k.equals(_uid)) {
+                if (!k.equals(_uid)) {
                     //给（非消息提供者）打开改文档的用户发消息
                     sendMessageToUser(v.getWs(), message);
                 }
             });
         }
+    }
+
+    private static void sendMessageToUser(WebSocketSession session, String message) {
+        log.info("sendMessageToUser--onlyForUser");
+        sendMessageToUser(session, new TextMessage(message));
     }
 
     /**
@@ -123,21 +128,15 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
      * @param session
      * @param message
      */
-    private static void sendMessageToUser(WebSocketSession session, WebSocketMessage message) {
+    private static void sendMessageToUser(WebSocketSession session, WebSocketMessage<?> message) {
         try {
             log.info("sendMessageToUser--WebSocketSession");
             synchronized (session) {
                 session.sendMessage(message);
             }
         } catch (Exception ex) {
-            log.error(ex.toString() + ";WebSocketSession:" + session + "message" + message);
+            log.error(ex.toString() + "; WebSocketSession:" + session + "message" + message);
         }
-    }
-
-    private static void sendMessageToUser(WebSocketSession session, String message) {
-
-        log.info("sendMessageToUser--onlyForUser");
-        sendMessageToUser(session, new TextMessage(message));
     }
 
     //全局的在线人数
@@ -157,10 +156,57 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
      * 前台连接并且注册了账户
      */
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
+        //配置传入文本消息的最大大小。
         session.setTextMessageSizeLimit(2048000);
+        //配置传入二进制消息的最大大小。
         session.setBinaryMessageSizeLimit(2048000);
         openConn(session);
+    }
+
+    private void openConn(WebSocketSession session) {
+        //创建一个连接窗口，并加入队列中
+        WSUserModel ws = new WSUserModel(session);
+        WSUserModel.webSocketMapAdd(USER_SOCKET_SESSION_MAP, ws);
+        addOnlineCount();           //在线数加1
+        log.info("有新窗口开始监听:" + ws.getId() + ", 当前在线人数为" + getOnlineCount());
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("message", "连接成功");
+            map.put("status", "0");
+            map.put("type", "0");
+            ObjectMapper obj = new ObjectMapper();
+            String params = obj.writeValueAsString(map);
+            sendMessageToUser(session, params);
+            //建立type为4的指令将所有加载期间其他人发送的指令进行收集
+            String gridkey = ws.getGridKey();
+            String index = jfGridFileGetService.getFirstBlockIndexByGridKey(gridkey);
+            String key = gridkey + index;
+            Boolean flag = redisService.rgetFlagContent(key);
+            //判断是否存在sheet信息被重新加载
+            if (flag) {
+                List<String> arr = redisService.rgetHandlerContent(key);
+                //如未收集到任何指令，不发送type为4信息
+                if (arr == null) {
+                    redisService.raddFlagContent(key, false);
+                    return;
+                }
+                StringBuilder data = new StringBuilder();
+                for (String str : arr) {
+                    data.append("&*&").append(str);
+                }
+                Map<String, Object> map1 = new HashMap<>();
+                map1.put("message", "反馈以前操作信息");
+                map1.put("status", "0");
+                map1.put("type", "4");
+                map1.put("data", data.toString());
+                String param = obj.writeValueAsString(map1);
+                redisService.raddFlagContent(key, false);
+                sendMessageToUser(session, param);
+            }
+        } catch (Exception e) {
+            log.error("openConn--Exception:" + e);
+        }
     }
 
     /**
@@ -177,7 +223,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             return;
         }
         //返回消息类型type :0：连接成功，1.发送给发送信息用户，2.发送信息给其他用户，3.发送选区位置信息 999、用户连接断开
-        Map map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         boolean _b = true;
         boolean s = true;
         ObjectMapper obj = new ObjectMapper();
@@ -189,8 +235,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             log.info("消息解压前：" + MyStringUtil.getStringShow(content));
             String contentReal = Pako_GzipUtils.unCompressToURI(content);
             log.info("消息解压后：" + MyStringUtil.getStringShow(contentReal));
-            //content=contentReal;
-            JSONObject bson = null;
+            JSONObject bson;
             try {
                 bson = JSONObject.parseObject(contentReal);
             } catch (Exception ex) {
@@ -221,12 +266,9 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                     RedisLock redisLock = new RedisLock(redisTemplate, gridKey);
                     try {
                         if (redisLock.lock()) {
-                            String _str = "";
+                            String _str;
                             _str = jfGridUpdateService.handleUpdate(gridKey, bson);
-
-                            if (_str.length() == 0) {
-
-                            } else {
+                            if (_str.length() != 0) {
                                 log.info("handleUpdate--error:{}", _str);
                                 _b = false;
                             }
@@ -235,17 +277,16 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                             _b = false;
                         }
                     } catch (Exception e) {
-                        log.error("handleUpdate--:redisLock--error:{}", e);
+                        log.error("handleUpdate--:redisLock--error: ", e);
                         _b = false;
                     } finally {
                         redisLock.unlock();
                     }
                 }
-
             } else {
                 _b = false;
             }
-            Map maps = new HashMap<>();
+            Map<String, Object> maps = new HashMap<>();
             //执行其他操作成功后，可调用消息发送给窗口
             String returnMessage = "error";
             if (_b) {
@@ -255,7 +296,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 maps.put("status", "0");
                 map.put("returnMessage", returnMessage);
                 map.put("createTime", System.currentTimeMillis());
-
                 //发送消息给本机其他用户
                 if (s) {
                     map.put("type", 2);
@@ -298,63 +338,20 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         closeConn(session, false);
     }
 
-    private void openConn(WebSocketSession session) {
-        //创建一个连接窗口，并加入的队列中
-        WSUserModel ws = new WSUserModel(session);
-        WSUserModel.webSocketMapAdd(USER_SOCKET_SESSION_MAP, ws);
-        addOnlineCount();           //在线数加1
-        log.info("有新窗口开始监听:" + ws.getId() + ",当前在线人数为" + getOnlineCount());
-        try {
-            Map map = new HashMap<>();
-            map.put("message", "连接成功");
-            map.put("status", "0");
-            map.put("type", "0");
-            ObjectMapper obj = new ObjectMapper();
-            String params = obj.writeValueAsString(map);
-            sendMessageToUser(session, params);
-            //建立type为4的指令将所有加载期间其他人发送的指令进行收集
-
-            String gridkey = ws.getGridKey();
-            String index = jfGridFileGetService.getFirstBlockIndexByGridKey(gridkey);
-            String key = gridkey + index;
-            Boolean flag = redisService.rgetFlagContent(key);
-            //判断是否又存在sheet信息被重新加载
-            if (flag) {
-                List<String> arr = redisService.rgetHandlerContent(key);
-                //如未收集到任何指令，不发送type为4信息
-                if (arr == null) {
-                    redisService.raddFlagContent(key, false);
-                    return;
-                }
-                String data = "";
-                for (String str : arr) {
-                    data = data + "&*&" + str;
-                }
-                Map map1 = new HashMap<>();
-                map1.put("message", "反馈以前操作信息");
-                map1.put("status", "0");
-                map1.put("type", "4");
-                map1.put("data", data);
-                String param = obj.writeValueAsString(map1);
-                redisService.raddFlagContent(key, false);
-                sendMessageToUser(session, param);
-            }
-
-        } catch (Exception e) {
-            log.error("openConn--Exception:" + e);
-        }
-    }
-
+    /**
+     * 断开连接
+     */
     private void closeConn(WebSocketSession session, boolean isError) {
         WSUserModel wsUserModel = new WSUserModel(session);
         WSUserModel.webSocketMapRemove(USER_SOCKET_SESSION_MAP, wsUserModel);
         if (isError) {
-            log.info("窗口关闭(Error):{},当前在线人数为{}", wsUserModel.getId(), getOnlineCount());
+            log.info("窗口关闭(Error):{}, 当前在线人数为{}", wsUserModel.getId(), getOnlineCount());
         } else {
-            subOnlineCount();              //在线数减1
-            log.info("窗口关闭:{},当前在线人数为:{}", wsUserModel.getId(), getOnlineCount());
+            //在线数减1
+            subOnlineCount();
+            log.info("窗口关闭:{}, 当前在线人数为:{}", wsUserModel.getId(), getOnlineCount());
             try {
-                Map map = new HashMap<>(2);
+                Map<String, Object> map = new HashMap<>(2);
                 map.put("message", "用户退出");
                 map.put("type", 999);
                 map.put("username", wsUserModel.getUserName());
@@ -364,14 +361,9 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 redisMessagePublish.publishMessage(new RedisMessageModel(ipAndPort, wsUserModel.getGridKey(), param));
                 sendMessageToUserByCurrent(wsUserModel, param);
             } catch (Exception ex) {
-                log.error("用户下线群发失败:{}", ex);
+                log.error("用户下线群发失败: ", ex);
             }
         }
-    }
-
-    @Override
-    public boolean supportsPartialMessages() {
-        return false;
     }
 
     /**
@@ -388,5 +380,10 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 sendMessageToUser(_userMap, _content, _wsUserModel.getWs().getId());
             }
         }
+    }
+
+    @Override
+    public boolean supportsPartialMessages() {
+        return false;
     }
 }

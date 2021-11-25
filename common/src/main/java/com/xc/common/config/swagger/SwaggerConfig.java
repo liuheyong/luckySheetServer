@@ -30,11 +30,12 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build();
-//        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).build();
+        //return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).build();
     }
 
     /**
      * 构建 api文档的详细信息函数,注意这里的注解引用的是哪个
+     *
      * @return
      */
     private ApiInfo apiInfo() {
@@ -50,32 +51,3 @@ public class SwaggerConfig {
                 .build();
     }
 }
-
-
-/*
-
- swagger 访问地址
- http://localhost:9001/web/swagger-ui.html
- Knife4j 访问地址
- http://localhost:9001/web/doc.html#/home
-
- 1、pom.xml 文件
-<!--整合Knife4j-->
-<dependency>
-    <groupId>com.github.xiaoymin</groupId>
-    <artifactId>knife4j-spring-boot-starter</artifactId>
-    <version>2.0.4</version>
-</dependency>
-
-2、Swagger2Config中增加一个@EnableKnife4j注解，
-@Configuration
-@EnableSwagger2
-@EnableKnife4j
-public class Swagger2Config {
-
-}
-参考地址
-https://www.toutiao.com/i6851744784730554891/
-
-
- */

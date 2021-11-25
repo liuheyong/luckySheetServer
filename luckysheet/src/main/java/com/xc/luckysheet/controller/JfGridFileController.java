@@ -22,7 +22,6 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 图表格页面调用 表格数据加载类
@@ -35,13 +34,6 @@ import java.util.Map;
 @RequestMapping(value = {"/api"})
 public class JfGridFileController {
 
-    /*
-        /load       加载默认表格   （）
-        /loadsheet  加载指定表格   （）
-
-        打开表格
-        /tu/api?id=listid
-    */
     @Autowired
     private JfGridFileGetService jfGridFileGetService;
 
@@ -62,11 +54,11 @@ public class JfGridFileController {
         String resultStr = "";
         if (gridKey.trim().length() != 0) {
             try {
-                String _checkStr = check(request, gridKey.toString(), null, OperationTypeEnum.Read);
+                String _checkStr = check(request, gridKey, null, OperationTypeEnum.Read);
                 if (_checkStr.length() > 0) {
                     return null;
                 }
-                List<JSONObject> dbObject = null;
+                List<JSONObject> dbObject;
                 dbObject = jfGridFileGetService.getDefaultByGridKey(gridKey);
                 if (dbObject != null) {
                     delErrorKey(dbObject);
@@ -75,13 +67,12 @@ public class JfGridFileController {
             } catch (Exception e) {
                 log.error(gridKey + e.getMessage());
             }
-
-
         }
         log.info("load");
         try {
             byte dest[] = Pako_GzipUtils.compress2(resultStr);
             OutputStream out = response.getOutputStream();
+            assert dest != null;
             out.write(dest);
             out.close();
             out.flush();
@@ -94,7 +85,6 @@ public class JfGridFileController {
     /**
      * 加载指定表格
      *
-     * @param map
      * @param request
      * @param response
      * @param gridKey
@@ -103,9 +93,7 @@ public class JfGridFileController {
      */
     @ApiOperation(value = "加载指定表格", notes = "加载指定表格")
     @PostMapping("/loadsheet")
-    public byte[] loadsheet(Map map, HttpServletRequest request, HttpServletResponse response,
-                            @RequestParam(defaultValue = "") String gridKey,
-                            @RequestParam(defaultValue = "") String[] index) {
+    public byte[] loadsheet(HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "") String gridKey, @RequestParam(defaultValue = "") String[] index) {
         log.info("loadsheet--gridKey:" + gridKey + " index:" + Arrays.toString(index));
         ////告诉浏览器，当前发送的是gzip格式的内容
         response.setHeader("Content-Encoding", "gzip");
@@ -113,14 +101,13 @@ public class JfGridFileController {
         String resultStr = "";
         if (gridKey.trim().length() != 0) {
             try {
-                String _id = gridKey;
-                String _checkStr = check(request, _id, null, OperationTypeEnum.Read);
+                String _checkStr = check(request, gridKey, null, OperationTypeEnum.Read);
                 log.info(_checkStr);
                 if (_checkStr.length() > 0) {
                     return null;
                 }
-                LinkedHashMap dbObject = null;
-                dbObject = jfGridFileGetService.getByGridKeys(_id, Arrays.asList(index));
+                LinkedHashMap<?, ?> dbObject;
+                dbObject = jfGridFileGetService.getByGridKeys(gridKey, Arrays.asList(index));
                 log.info("loadsheet--dbObject--");
                 if (dbObject != null) {
                     resultStr = JsonUtil.toJson(dbObject);
@@ -129,22 +116,20 @@ public class JfGridFileController {
                 log.info(gridKey + e.getMessage());
             }
         }
-
-        byte dest[] = Pako_GzipUtils.compress2(resultStr);
+        byte[] dest = Pako_GzipUtils.compress2(resultStr);
         log.info("loadsheet");
-        OutputStream out = null;
+        OutputStream out;
         try {
             out = response.getOutputStream();
+            assert dest != null;
             out.write(dest);
             out.close();
             out.flush();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             log.error("loadsheet---ioerror:" + e);
         } catch (Exception ex) {
             log.error("loadsheet---error:" + ex);
         }
-
         return null;
     }
 
@@ -161,7 +146,6 @@ public class JfGridFileController {
         //校验代码
         return "";
     }
-
 
     /**
      * 数据返回时，去掉数组变字符串，引发错误的key

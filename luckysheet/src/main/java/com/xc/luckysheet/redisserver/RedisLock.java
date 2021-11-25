@@ -35,7 +35,6 @@ public class RedisLock {
      * 是否锁定标志
      */
     private volatile boolean locked = false;
-
     /**
      * 当前线程
      */
@@ -169,12 +168,10 @@ public class RedisLock {
     }
 }
 
-/*
-    //使用方法，创建RedisLock对象
-    RedisLock lock = new RedisLock(redisTemplate, "lock_" + product.getId());
-    try {
-        if (lock.lock()) {}
-    } finally {
-        lock.unlock();
-    }
-*/
+////使用方法，创建RedisLock对象
+//RedisLock lock = new RedisLock(redisTemplate, "lock_" + product.getId());
+//try {
+//    if (lock.lock()) {}
+//} finally {
+//    lock.unlock();
+//}

@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * redis 队列（左头右尾） 服务
+ *
  * @author Administrator
  */
 @Slf4j
@@ -54,7 +55,6 @@ public class RedisQueueService {
     }
 
     public void clear() {
-
         redisTemplate.delete(SysConstant.Editor.editorQueue);
     }
 
@@ -100,6 +100,7 @@ public class RedisQueueService {
 
     /**
      * 读取redis数据数组中所有数据，不删除数据
+     *
      * @param key
      * @return
      */
@@ -110,23 +111,24 @@ public class RedisQueueService {
 
     /**
      * 从队列的左边获取数据,并删除已取出的数据
+     *
      * @param key
      * @param T
      * @param count
      * @param <T>
      * @return
      */
-    public <T> List<T> popList(String key,Class<T> T,int count){
-        List<T> _list=new ArrayList<T>();
-        try{
-            for(int x=0;x<count;x++){
-                Object obj=pop(key);
-                if(obj==null){
+    public <T> List<T> popList(String key, Class<T> T, int count) {
+        List<T> _list = new ArrayList<T>();
+        try {
+            for (int x = 0; x < count; x++) {
+                Object obj = pop(key);
+                if (obj == null) {
                     break;
                 }
-                _list.add((T)obj);
+                _list.add((T) obj);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex.getMessage());
         }
         return _list;

@@ -50,7 +50,7 @@ public class IpAndPortUtil {
      * @return
      */
     public static String getIpWeblogic() {
-        Context ctx = null;
+        Context ctx;
         String listenAddr = null;
         String port = null;
         try {

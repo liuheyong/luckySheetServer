@@ -14,19 +14,20 @@ import java.lang.reflect.Method;
 
 /**
  * 切面切在controller上捕获全局异常并处理
+ *
  * @author Administrator
  */
 @Component
 @Aspect
 @Slf4j
 public class InterfaceRequestErrorAndPerformanceLog {
+
     /**
      * 切入到controller层的包和所有子包里的任意类的任意方法的执行
      */
     @Pointcut("execution(* com.xc.*.controller..*.*(..))")
     public void pointCut() {
     }
-
 
     @Around("pointCut()")
     public Object handleControllerMethod(ProceedingJoinPoint pjp) throws Throwable {
@@ -70,7 +71,6 @@ public class InterfaceRequestErrorAndPerformanceLog {
                 Object arg = args[j];
                 parameterTypes[j] = arg.getClass();
             }
-
             Method method = controller.getClass().getDeclaredMethod(signature.getName(), parameterTypes);
             Class<?> returnType = method.getReturnType();
             if (!returnType.equals(ResponseVO.class)) {

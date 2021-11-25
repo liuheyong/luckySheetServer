@@ -14,8 +14,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Slf4j
 @Configuration
 public class RedisConfig {
+
     /**
      * 配置自定义redisTemplate
+     *
      * @return
      */
     @Bean
@@ -27,7 +29,7 @@ public class RedisConfig {
         template.setConnectionFactory(redisConnectionFactory);
 
         //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
-        Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Object.class);
+        Jackson2JsonRedisSerializer<?> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -40,35 +42,7 @@ public class RedisConfig {
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(serializer);
         template.afterPropertiesSet();
-
         log.info("Config redisTemplate end.");
         return template;
     }
-
 }
-
-/*
-
-集群配置
-spring:
-  #RedisProperties配置spring data redis
-  redis:
-    timeout: 6000ms
-    password: 1qaz2wsx
-    lettuce:
-      pool:
-        max-active: 1000 #连接池最大连接数（使用负值表示没有限制）
-        max-idle: 10 # 连接池中的最大空闲连接
-        min-idle: 5 # 连接池中的最小空闲连接
-        max-wait: 30 # 连接池最大阻塞等待时间（使用负值表示没有限制）
-    cluster:
-      nodes:
-        - 47.103.218.34:7001
-        - 47.103.218.34:7002
-        - 47.103.218.34:7003
-        - 47.103.218.34:7004
-        - 47.103.218.34:7005
-        - 47.103.218.34:7006
-      maxRedirects: 3 # 获取失败 最大重定向次数
-
- */

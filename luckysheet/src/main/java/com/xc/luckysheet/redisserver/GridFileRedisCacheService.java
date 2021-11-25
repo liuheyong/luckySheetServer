@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 /**
  * @author Administrator
  */
@@ -26,12 +25,10 @@ public class GridFileRedisCacheService {
      * 批量更新数据
      */
     private String dbdata_content = "lk:dbdata:";
-
     /**
      * 收集指令信息
      */
     private String hand_flag_content = "lk:upflag:";
-
     /**
      * 收集指令信息内容
      */
@@ -52,7 +49,6 @@ public class GridFileRedisCacheService {
         return null;
     }
 
-
     /**
      * @param key
      * @param db
@@ -61,7 +57,6 @@ public class GridFileRedisCacheService {
         String redisKey = dbdata_content + key;
         redisCache.addList(redisKey, db);
     }
-
 
     /**
      * 存入启用存储指令信息
@@ -92,7 +87,6 @@ public class GridFileRedisCacheService {
         return flag;
     }
 
-
     /**
      * 获取数据
      *
@@ -116,5 +110,4 @@ public class GridFileRedisCacheService {
             return null;
         }
     }
-
 }

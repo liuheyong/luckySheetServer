@@ -26,8 +26,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
         String websocket_url = "/websocket/luckysheet";
         //注册Handler
         registry.addHandler(getMyWebSocketHandler(), websocket_url).
-                //注册Interceptor
-                        addInterceptors(getMyWebSocketInterceptor())
+                addInterceptors(getMyWebSocketInterceptor()) //注册Interceptor
                 //配置*代表允许所有的ip进行调用
                 .setAllowedOrigins("*");
 
@@ -36,10 +35,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
         String sockjs_url = "/sockjs/luckysheet";
         //注册Handler
         registry.addHandler(getMyWebSocketHandler(), sockjs_url).
-                //注册Interceptor
-                        addInterceptors(getMyWebSocketInterceptor())
+                addInterceptors(getMyWebSocketInterceptor())//注册Interceptor
                 //配置*代表允许所有的ip进行调用
-                .setAllowedOrigins("*").withSockJS();
+                .setAllowedOrigins("*")
+                .withSockJS();
 
         //3.获取系统ip
         log.info("registerWebSocketHandlers:" + servertype);
@@ -59,5 +58,4 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public MyWebSocketInterceptor getMyWebSocketInterceptor() {
         return new MyWebSocketInterceptor();
     }
-
 }

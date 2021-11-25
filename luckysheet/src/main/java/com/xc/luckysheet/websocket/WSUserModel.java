@@ -21,7 +21,6 @@ public class WSUserModel {
      * 文档key
      */
     public static final String USER_GRIDKEY = "g";
-
     /**
      * ws-session
      */
@@ -69,7 +68,7 @@ public class WSUserModel {
         if (maps.containsKey(wm.getGridKey())) {
             maps.get(wm.getGridKey()).put(wm.getId(), wm);
         } else {
-            Hashtable<String, WSUserModel> _map = new Hashtable<String, WSUserModel>();
+            Hashtable<String, WSUserModel> _map = new Hashtable<>();
             _map.put(wm.getId(), wm);
             maps.put(wm.getGridKey(), _map);
         }
@@ -79,7 +78,7 @@ public class WSUserModel {
         if (maps.containsKey(wm.getGridKey())) {
             if (maps.get(wm.getGridKey()) != null) {
                 Hashtable<String, WSUserModel> _map = maps.get(wm.getGridKey());
-                if (_map != null && _map.containsKey(wm.getId())) {
+                if (_map != null) {
                     _map.remove(wm.getId());
                 }
             }

@@ -105,14 +105,14 @@ public class JfGridUpdateService {
             //JSONArray _list=(JSONArray)bson;
             //汇聚全部的 3.1单元格操作v
             List<JSONObject> _vlist = new ArrayList<JSONObject>();
-            for (int x = 0; x < _list.size(); x++) {
-                if (_list.get(x).containsKey("t") && _list.get(x).get("t").equals("v")) {
+            for (JSONObject jsonObject : _list) {
+                if (jsonObject.containsKey("t") && jsonObject.get("t").equals("v")) {
                     //单元格处理
-                    _vlist.add(_list.get(x));
+                    _vlist.add(jsonObject);
                 } else {
                     //其他操作
                     log.info("其他操作--sb.append:chooseOperation");
-                    _sb.append(chooseOperation(gridKey, _list.get(x)));
+                    _sb.append(chooseOperation(gridKey, jsonObject));
                 }
             }
             if (_vlist.size() > 0) {
@@ -654,11 +654,9 @@ public class JfGridUpdateService {
                                 }
                             }
                         }
-
                         _celldatas.addAll(_addList);
                     }
                 }
-
                 //更新一下config中的merge信息
                 if (mc != null) {
                     if (json_data.containsKey("config")) {
@@ -733,8 +731,6 @@ public class JfGridUpdateService {
             if (index == null || len == null) {
                 return "参数错误";
             }
-
-
             //1、先获取原数据
             //记录的ids，用于删除
             List<String> ids = new ArrayList<String>();
@@ -804,7 +800,6 @@ public class JfGridUpdateService {
                     drc_arc_handle_mc(mc,_celldatas);*/
                 }
 
-
                 /*if(rc.equals("r")){
                 	json_data.put("row",_row-len);
                 }else{
@@ -819,8 +814,6 @@ public class JfGridUpdateService {
                     return "更新失败";
                 }
             }
-
-
         } catch (Exception ex) {
             log.error(ex.getMessage());
             return ex.getMessage();
@@ -904,8 +897,6 @@ public class JfGridUpdateService {
                     s = "false";
                 }
             }
-
-
             log.info("Operation_all:start+getConfigByGridKey:_v:" + _v);
             //1、先获取原数据
             JSONObject _dbObject = recordSelectHandle.getConfigByGridKey(gridKey, i);
@@ -927,7 +918,6 @@ public class JfGridUpdateService {
                 } else {
                     _v = "\"" + _v + "\"";
                 }
-
                 _result = recordDataUpdataHandle.updateCellDataListTxtValue(query, keyName, null, _v);
             } else {
                 try {
@@ -941,13 +931,11 @@ public class JfGridUpdateService {
                     _result = recordDataUpdataHandle.updateCellDataListTxtValue(query, keyName, null, _v);
                     //update.set("jfgridfile."+_sheetPosition+"."+k,_v);
                 }
-
             }
             log.info("updateOne--start");
             if (!_result) {
                 return "更新失败";
             }
-
         } catch (Exception ex) {
             log.error("Operation_all--err--all:" + ex.getMessage());
         }
@@ -967,11 +955,11 @@ public class JfGridUpdateService {
             String i = bson.get("i").toString();
             //对象值，这里对象的内部字段不需要单独更新，所以存为文本即可  2018-11-28 前段需求必须取出时为对象
             JSONObject v = bson.getJSONObject("v");
-//            if (bson.get("v") instanceof String) {
-//                v = bson.get("v").toString();
-//            } else {
-//                v = bson.get("v");
-//            }
+            //if (bson.get("v") instanceof String) {
+            //    v = bson.get("v").toString();
+            //} else {
+            //    v = bson.get("v");
+            //}
 
             //操作类型,add为新增，update为更新，del为删除
             String op = bson.get("op").toString();
@@ -1166,7 +1154,6 @@ public class JfGridUpdateService {
             if (!_result) {
                 return "更新失败";
             }
-
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -1201,8 +1188,6 @@ public class JfGridUpdateService {
                 return "list_id=" + gridKey + ",index=" + i + "的sheet不存在";
                 //return "gridKey="+gridKey+"的数据表格不存在";
             }
-
-
             //判断_v中是否存在null，则删除该参数
             boolean flag = false;
             String keys = "";
@@ -1216,7 +1201,6 @@ public class JfGridUpdateService {
             } else {
                 flag = true;
             }
-
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
             JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
@@ -1336,13 +1320,10 @@ public class JfGridUpdateService {
                         isExists = true;
                         _existsBlock.put(block_id, _dbObject);
                     }
-
                 }
-
                 //单元格处理，这一步对象已经获取
                 if (v != null) {
                     //修改/添加
-
                     JSONObject _v = new JSONObject();
                     _v.put("r", r);
                     _v.put("c", c);
@@ -1364,6 +1345,7 @@ public class JfGridUpdateService {
                             }
                         }
                         if (_position == -1) {
+                            assert _celldata != null;
                             _celldata.add(_v);
                         }
                     } else {
@@ -1393,7 +1375,6 @@ public class JfGridUpdateService {
                     }
                 }
             }
-
             //处理
             List<GridRecordDataModel> models = new ArrayList<>();
             List<String> block_ids = new ArrayList<>();
@@ -1420,7 +1401,6 @@ public class JfGridUpdateService {
                     return "更新失败";
                 }
             }
-
             if (_noExistsBlock.size() > 0) {
                 for (JSONObject _d : _noExistsBlock.values()) {
                     GridRecordDataModel model = new GridRecordDataModel();
@@ -1435,13 +1415,11 @@ public class JfGridUpdateService {
                     model.setIs_delete(0);
                     models.add(model);
                 }
-
                 String _result = recordDataInsertHandle.InsertIntoBatch(models);
                 if (_result == null) {
                     return "更新失败";
                 }
             }
-
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -1460,7 +1438,6 @@ public class JfGridUpdateService {
             //压缩处理
             return "";
         }
-
         //不压缩处理
         try {
             log.info("start---Operation_v" + bson.toString());
@@ -1574,9 +1551,7 @@ public class JfGridUpdateService {
                         return "更新失败";
                     }
                 }
-
             }
-
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -1646,8 +1621,6 @@ public class JfGridUpdateService {
             if (_sheetPosition == null) {
                 return "index=" + curindex + "的sheet不存在";
             }
-
-
             //设置全部status=0
             GridRecordDataModel model = new GridRecordDataModel();
             model.setBlock_id(JfGridConfigModel.FirstBlockID);
@@ -1703,14 +1676,12 @@ public class JfGridUpdateService {
             if (bson.containsKey("v")) {
                 v = bson.getJSONObject("v");
             }
-
             //1、先获取原数据（第一块）
             JSONObject _dbObject = recordSelectHandle.getChartByGridKey(gridKey2, i);
             if (_dbObject == null) {
                 return "list_id=" + gridKey2 + ",index=" + i + "的sheet不存在";
                 //return "gridKey="+gridKey+"的数据表格不存在";
             }
-
             //更新操作（第一块）
             //Query query = new Query();
             //query.addCriteria(Criteria.where("list_id").is(gridKey2).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
@@ -1731,7 +1702,7 @@ public class JfGridUpdateService {
                 } else {
                     if (chart instanceof List) {
                         List<JSONObject> _list = (List<JSONObject>) chart;
-                        if (_list != null && _list.size() > 0) {
+                        if (_list.size() > 0) {
                             //找出位置
                             int pos = -1;
                             for (int x = 0; x < _list.size(); x++) {
@@ -1758,13 +1729,11 @@ public class JfGridUpdateService {
                             }
                         }
                     }
-
                 }
             }
             if (!_result) {
                 return "更新失败";
             }
-
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
@@ -1781,29 +1750,25 @@ public class JfGridUpdateService {
                     log.info("Operation_mv---v" + v);
                     Object db = bson.get("v");
                     //更新操作（第一块）
-
                     //Query query = new Query();
                     //query.addCriteria(Criteria.where("list_id").is(gridKey).and("index").is(i).and("block_id").is(JfGridConfigModel.FirstBlockID));
                     JSONObject query = getQuery(gridKey, i, JfGridConfigModel.FirstBlockID);
-
                     boolean _result = recordDataUpdataHandle.updateCellDataListValue(query, "jfgird_select_save", null, db);
                     if (!_result) {
                         log.info("更新失败");
                     }
                 } catch (Exception e) {
                     log.warn(e.getMessage());
-                } finally {
-
                 }
             }
         }).start();
     }
 
-    //3.1	批量单元格操作v
-    private String Operation_rv(String gridKey, JSONObject bson) {
+    //3.1 批量单元格操作v
+    private void Operation_rv(String gridKey, JSONObject bson) {
         if (GzipHandle.runGzip) {
 
-            return "";
+            return;
         }
         //不压缩处理
         try {
@@ -1813,7 +1778,7 @@ public class JfGridUpdateService {
             List columns = (List) range.get("column");
             List rows = (List) range.get("row");
             Integer r = Integer.parseInt(rows.get(0).toString());//	单元格的行号
-            Integer c = Integer.parseInt(columns.get(0).toString());//	单元格的列号
+            int c = Integer.parseInt(columns.get(0).toString());//	单元格的列号
             Object all = bson.get("v");  //	单元格的值 v=null 删除单元格
 
             //获取行列
@@ -1830,8 +1795,8 @@ public class JfGridUpdateService {
             //不存在的块
             HashMap<String, JSONObject> _noExistsBlock = new HashMap<String, JSONObject>();
             JSONArray data = (JSONArray) all;
-            for (int j = 0; j < data.size(); j++) {
-                JSONArray arrayList = (JSONArray) data.get(j);
+            for (Object datum : data) {
+                JSONArray arrayList = (JSONArray) datum;
                 int cl = c;
                 for (Object v : arrayList) {
                     //获取数据所在块的编号
@@ -1866,12 +1831,10 @@ public class JfGridUpdateService {
                             isExists = true;
                             _existsBlock.put(block_id, _dbObject);
                         }
-
                     }
                     //单元格处理，这一步对象已经获取
                     if (v != null) {
                         //修改/添加
-
                         JSONObject _v = new JSONObject();
                         _v.put("r", r);
                         _v.put("c", cl);
@@ -1893,6 +1856,7 @@ public class JfGridUpdateService {
                                 }
                             }
                             if (_position == -1) {
+                                assert _celldata != null;
                                 _celldata.add(_v);
                             }
                         } else {
@@ -1925,7 +1889,6 @@ public class JfGridUpdateService {
                 }
                 r++;
             }
-
             //处理
             log.info("_existsBlock--" + _existsBlock.size() + ",_noExistsBlock:" + _noExistsBlock.size());
             List<GridRecordDataModel> models = new ArrayList<>();
@@ -1969,10 +1932,10 @@ public class JfGridUpdateService {
                     isModels.add(model);
                 }
                 JSONObject db = recordSelectHandle.getCelldataByGridKey(gridKey, i, JfGridConfigModel.FirstBlockID);
-                Integer col = Integer.valueOf(db.get("column").toString());
-                Integer row = Integer.valueOf(db.get("row").toString());
+                int col = Integer.parseInt(db.get("column").toString());
+                int row = Integer.parseInt(db.get("row").toString());
                 if (r < row && c < col) {
-                    //修改或插入的行列低于原行列不修改原行列信息
+                    // todo 修改或插入的行列低于原行列不修改原行列信息
                 } else {
                     Integer updateRow = Math.max(r, row);
                     Integer updateCol = Math.max(c, col);
@@ -1996,8 +1959,6 @@ public class JfGridUpdateService {
         } catch (Exception ex) {
             log.error(ex.getMessage());
         }
-
-        return "";
     }
 
     //3.7.3	非物理删除恢复shre
@@ -2052,10 +2013,9 @@ public class JfGridUpdateService {
         return "";
     }
 
-    public String updateRvDbContent(String gridKey, JSONObject bson, String key) {
+    public void updateRvDbContent(String gridKey, JSONObject bson, String key) {
         List<JSONObject> bsons = gridFileRedisCacheService.rgetDbDataContent(key);
         loadRvMsgForLock(gridKey, bsons, key);
-        return "";
     }
 
     private void loadRvMsgForLock(String gridKey, List<JSONObject> bsons, String key) {
@@ -2074,8 +2034,7 @@ public class JfGridUpdateService {
                 Thread.sleep(100);
                 loadRvMsgForLock(gridKey, bsons, key);
             }
-        } catch (Exception e) {
-
+        } catch (Exception ignored) {
         } finally {
             redisLock.unlock();
         }
@@ -2098,10 +2057,10 @@ public class JfGridUpdateService {
         int[] delCount = recordDelHandle.delete(listName);
         log.info("del row:{}", delCount);
         List<GridRecordDataModel> models = new ArrayList<>(6);
-//        List<String> listName=new ArrayList<String>(2){{
-//            add("1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2xc");
-//            add("1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2c3");
-//        }};
+        //List<String> listName=new ArrayList<String>(2){{
+        //    add("1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2xc");
+        //    add("1079500#-8803#7c45f52b7d01486d88bc53cb17dcd2c3");
+        //}};
         for (String n : listName) {
             for (int x = 0; x < 3; x++) {
                 if (x == 0) {
@@ -2168,5 +2127,4 @@ public class JfGridUpdateService {
         addList.addAll(modelList);
         recordDataInsertHandle.InsertIntoBatch(addList);
     }
-
 }

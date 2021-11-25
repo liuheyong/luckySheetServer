@@ -24,7 +24,7 @@ public class RedisMessagePublish {
     public static String channel;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<?, ?> redisTemplate;
 
     /**
      * 发布者

@@ -31,12 +31,6 @@ import java.util.*;
  * jar启动
  * java -jar luckysheet.jar
  * 测试类
- * http://localhost:9004/luckysheet/doc.html#/home
- * http://luckysheet.lashuju.com/demo/qkIndex.html
- * http://127.0.0.1:85/luckysheet/demo/
- * http://localhost:9004/luckysheet/test/constant?param=123
- * http://localhost:9004/luckysheet/test/down?listId=xc79500%23-8803%237c45f52b7d01486d88bc53cb17dcd2c3&fileName=list.xls
- * http://localhost:9004/luckysheet/test/down?listId=1079500%23-8803%237c45f52b7d01486d88bc53cb17dcd2xc&fileName=list.xls
  *
  * @author Administrator
  */
@@ -61,7 +55,6 @@ public class TestController {
         map.put("threadName", Thread.currentThread().getName());
         map.put("SUCCESS", "true");
         map.put("param", param);
-
         log.info(JsonUtil.toJson(map));
         return JsonUtil.toJson(map);
     }
@@ -96,7 +89,7 @@ public class TestController {
     @ApiOperation(value = "初始化db单个", notes = "初始化db单个")
     @GetMapping("dbInit/one")
     public ResponseVO dbInit(String listId) {
-        List<String> listName = new ArrayList<String>();
+        List<String> listName = new ArrayList<>();
         listName.add(listId);
         jfGridUpdateService.initTestData(listName);
         return ResponseVO.successInstance("success");
@@ -132,7 +125,7 @@ public class TestController {
         }
         List<JSONObject> lists = jfGridFileGetService.getAllSheetByGridKey(listId);
         //输出的文件名
-        String _fileName = null;
+        String _fileName;
         try {
             _fileName = new String(zipFileName.getBytes("gb2312"), "ISO8859-1");
         } catch (UnsupportedEncodingException e) {
@@ -140,8 +133,6 @@ public class TestController {
         }
         response.setContentType("application/zip");
         response.setHeader("Content-Disposition", "attachment;fileName=" + _fileName + ".zip");
-
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             XlsUtil.exportXlsFile(baos, isXlsx, lists);
@@ -166,8 +157,6 @@ public class TestController {
         } catch (Exception ex) {
             return ResponseVO.errorInstance(ex.getMessage());
         }
-
-
     }
 
     /**
@@ -177,7 +166,7 @@ public class TestController {
      * @date 2021/4/25
      */
     @PostMapping("/import_excel")
-    public ResponseVO importExcel(@RequestParam("file") MultipartFile file, HttpServletResponse response) {
+    public ResponseVO importExcel(@RequestParam("file") MultipartFile file) {
         try {
             InputStream inputStream = file.getInputStream();
             if (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".xls") || file.getOriginalFilename().endsWith(".xlsx")) {
@@ -200,6 +189,4 @@ public class TestController {
             return ResponseVO.errorInstance(e.getMessage());
         }
     }
-
-
 }

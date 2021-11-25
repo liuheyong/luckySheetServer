@@ -6,7 +6,7 @@ package com.xc.common.constant;
  */
 public interface SysConstant {
 
-    interface MSG{
+    interface MSG {
         /**
          * 操作成功
          */
@@ -21,7 +21,7 @@ public interface SysConstant {
     /**
      * 状态
      */
-    public interface STATUS {
+    interface STATUS {
         /**
          * 有效/成功
          */
@@ -31,14 +31,12 @@ public interface SysConstant {
          * 失效/失败
          */
         String Invalid = "0";
-
-
     }
 
     /**
      * 系统消息代码
      */
-    public interface SYS_CODE {
+    interface SYS_CODE {
         /**
          * 消息代码前缀
          */
@@ -52,7 +50,6 @@ public interface SysConstant {
          * 失败
          */
         String STATUS_ERROR = SYS + "0";
-
     }
 
     interface Editor {
@@ -61,9 +58,4 @@ public interface SysConstant {
          */
         String editorQueue = "redis_editor_queue";
     }
-
-
-
-
-
 }

@@ -17,8 +17,7 @@ public enum ExcelCenterStyleEnum {
     /**
      * 居中
      */
-    CENTER((short) 2, 0, "居中"),
-    ;
+    CENTER((short) 2, 0, "居中");
 
     /**
      * excel居中code

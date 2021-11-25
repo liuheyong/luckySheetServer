@@ -23,8 +23,7 @@ public class MyURLUtil {
      */
     public static String urlDecode(String str) {
         try {
-            String strReturn = URLDecoder.decode(str, "UTF-8");
-            return strReturn;
+            return URLDecoder.decode(str, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             System.out.println("urlDecode error:" + str + " info:" + e.toString());
         }
